@@ -222,11 +222,6 @@ p { color: var(--text-muted); max-width: 70ch; }
 
 
 
-.article-card:hover 
-
-
-
-
 /* 11. FORM 
    ------------------------------------------------------------ */
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
@@ -503,3 +498,26 @@ p { color: var(--text-muted); max-width: 70ch; }
     align-self: flex-start;
 }
 .article-card__link:hover { border-bottom-color: var(--gold); }
+
+/* MOBILE OPTIMIZATIONS FOR NEW LAYOUTS */
+@media (max-width: 768px) {
+    .team-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .articles-list { grid-template-columns: 1fr; gap: 1.5rem; }
+    #services-container, #team-grid, #articles-list, #home-cards-grid { min-height: auto; }
+    .page-hero { padding: 100px 0 60px; }
+}
+
+@media (max-width: 480px) {
+    .container { padding: 0 1.25rem; }
+    .section { padding: 60px 0; }
+    .page-hero { padding: 80px 0 40px; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.75rem; }
+    h3 { font-size: 1.4rem; }
+    .card { padding: 2rem 1.5rem; }
+    .article-card { padding: 1.5rem; }
+    .team-card__content { padding: 1.25rem; }
+    .cta-band { padding: 60px 0; }
+    .cta-band .btn-group { align-items: stretch; }
+    .btn { width: 100%; justify-content: center; }
+}
