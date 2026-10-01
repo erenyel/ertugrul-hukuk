@@ -1,0 +1,505 @@
+/* ============================================================
+   ERTUĞRUL HUKUK BÜROSU — Style Sheet
+   Tema: Old Money / Quiet Luxury (Dark Navy & Gold)
+   ============================================================ */
+
+:root {
+    --bg-dark: #0B132B; /* Koyu Lacivert */
+    --bg-alt: #080D1E; /* Biraz daha koyu ton, derinlik için */
+    --text-main: #F8F9FA; /* Kırık beyaz */
+    --text-muted: #A0AAB2; /* Gri / Soluk bej */
+    --gold: #D4AF37; /* Asil Altın */
+    --gold-muted: rgba(212, 175, 55, 0.4);
+    --gold-faint: rgba(212, 175, 55, 0.15);
+    --border-light: rgba(255, 255, 255, 0.08);
+    
+    --font-heading: \'Playfair Display\', serif;
+    --font-body: \'Inter\', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; transition: color 0.4s ease; }
+ul { list-style: none; }
+
+/* SAYFA YÜKLENİYOR — FOUC Önleme */
+body.fb-loading .fb-dynamic { opacity: 0; }
+.fb-dynamic { transition: opacity 0.6s ease; }
+
+/* 2. TİPOGRAFİ
+   ------------------------------------------------------------ */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--text-main);
+    font-weight: 400; /* İnce ve zarif başlıklar */
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+}
+h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); letter-spacing: 0.08em; }
+h2 { font-size: clamp(2rem, 3.5vw, 3rem); }
+h3 { font-size: clamp(1.4rem, 2.5vw, 2rem); }
+h4 { font-size: 1.15rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+p { color: var(--text-muted); max-width: 70ch; }
+
+.eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.placeholder-text { color: var(--text-muted); font-style: italic; opacity: 0.5; }
+
+/* 3. LAYOUT
+   ------------------------------------------------------------ */
+.container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+.section { padding: 120px 0; } /* Geniş nefes alan boşluklar */
+.section--alt { background-color: var(--bg-alt); }
+.section--navy { background-color: var(--bg-dark); }
+.section-header { margin-bottom: 5rem; text-align: center; }
+.section-header h2 { margin-bottom: 1.5rem; }
+
+.divider {
+    width: 60px;
+    height: 1px;
+    background-color: var(--gold-muted);
+    margin: 1.5rem 0;
+}
+.section-header .divider { margin: 1.5rem auto; background-color: var(--gold); }
+
+/* 4. BUTONLAR
+   ------------------------------------------------------------ */
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.75rem;
+    padding: 1rem 2.5rem;
+    font-family: var(--font-body);
+    font-size: 0.75rem; font-weight: 400;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border-light);
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+.btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: var(--gold-faint);
+}
+
+/* Renkli buton kalabalığını kaldırıp hepsini aynı elegant tarza çekiyoruz */
+.btn--gold, .btn--outline, .btn--outline-navy {
+    border: 1px solid var(--gold-muted);
+    color: var(--gold);
+}
+.btn--gold:hover, .btn--outline:hover, .btn--outline-navy:hover {
+    border-color: var(--gold);
+    background: var(--gold-faint);
+    color: var(--gold);
+}
+
+/* 5. HEADER & NAV
+   ------------------------------------------------------------ */
+.site-header {
+    position: sticky; top: 0; z-index: 100;
+    background-color: rgba(11, 19, 43, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-light);
+    transition: all 0.4s ease;
+}
+.site-header.scrolled {
+    background-color: rgba(11, 19, 43, 0.98);
+    border-bottom: 1px solid var(--gold-faint);
+}
+.header-inner { display: flex; align-items: center; justify-content: space-between; height: 90px; transition: height 0.4s; }
+.site-header.scrolled .header-inner { height: 70px; }
+
+.brand { display: flex; flex-direction: column; line-height: 1.2; text-decoration: none; }
+.brand__name {
+    font-family: var(--font-heading);
+    font-size: 1.5rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-main);
+}
+.brand__sub {
+    font-family: var(--font-body);
+    font-size: 0.65rem; font-weight: 300; letter-spacing: 0.25em;
+    color: var(--text-muted); text-transform: uppercase; display: block; margin-top: 0.2rem;
+}
+
+.site-nav { display: flex; align-items: center; gap: 3rem; }
+.nav-link {
+    font-family: var(--font-body);
+    font-size: 0.75rem; font-weight: 300;
+    text-transform: uppercase; letter-spacing: 0.15em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.nav-link:hover, .nav-link.active { color: var(--gold); }
+
+.hamburger { display: none; flex-direction: column; gap: 6px; background: none; border: none; cursor: pointer; padding: 5px; }
+.hamburger span { display: block; width: 26px; height: 1px; background-color: var(--text-main); transition: all 0.3s; }
+
+/* 6. MOBİL MENÜ
+   ------------------------------------------------------------ */
+.mobile-nav {
+    display: none; position: fixed; inset: 0; background-color: var(--bg-dark);
+    z-index: 101; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav .nav-link { font-size: 0.9rem; color: var(--text-main); }
+.mobile-nav .nav-link:hover { color: var(--gold); }
+.mobile-nav-close { position: absolute; top: 2rem; right: 2rem; background: none; border: none; color: var(--text-main); font-size: 1.5rem; cursor: pointer; transition: color 0.3s; }
+.mobile-nav-close:hover { color: var(--gold); }
+
+/* 7. PAGE HERO
+   ------------------------------------------------------------ */
+.page-hero {
+    background-color: var(--bg-alt);
+    padding: 140px 0 100px;
+    border-bottom: 1px solid var(--border-light);
+    text-align: center;
+}
+.page-hero .eyebrow { color: var(--gold); margin-bottom: 1.5rem; }
+.page-hero h1 { color: var(--text-main); margin: 0 auto; max-width: 25ch; }
+
+/* 8. KARTLAR
+   ------------------------------------------------------------ */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; }
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: transparent;
+    border: 1px solid var(--border-light);
+    padding: 3rem 2.5rem;
+    text-align: center;
+    transition: all 0.5s ease;
+}
+.card:hover {
+    border-color: var(--gold-muted);
+    background-color: rgba(255,255,255,0.01);
+    transform: translateY(-5px);
+}
+.card__icon { font-size: 2rem; color: var(--gold); margin-bottom: 2rem; font-weight: 300; transition: transform 0.4s ease; }
+.card:hover .card__icon { transform: scale(1.1); }
+.card__title { font-size: 1.25rem; margin-bottom: 1rem; color: var(--text-main); }
+.card__text { flex-grow: 1; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 2.5rem; line-height: 1.8; }
+.card__link {
+    font-family: var(--font-body); font-size: 0.75rem; font-weight: 400;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold);
+}
+
+/* 9. EKİP KARTLARI
+   ------------------------------------------------------------ */
+.team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 3rem; }
+
+
+
+
+
+/* 10. MAKALELER
+   ------------------------------------------------------------ */
+
+
+
+
+
+.article-card:hover 
+
+
+
+
+/* 11. FORM 
+   ------------------------------------------------------------ */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.75rem; }
+.form-group--full { grid-column: 1 / -1; }
+.form-group label {
+    font-family: var(--font-body); font-size: 0.75rem; font-weight: 300;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted);
+}
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 1rem 1.25rem;
+    border: 1px solid var(--border-light); background-color: transparent;
+    font-family: var(--font-body); font-size: 1rem; color: var(--text-main); outline: none;
+    transition: all 0.4s;
+}
+.form-group input:focus, .form-group textarea:focus { border-color: var(--gold); background-color: rgba(255,255,255,0.02); }
+.form-group textarea { resize: vertical; min-height: 160px; }
+
+/* 12. İLETİŞİM BİLGİ KUTUSU
+   ------------------------------------------------------------ */
+.contact-info { display: flex; flex-direction: column; gap: 2.5rem; }
+.contact-info__item { display: flex; gap: 1.5rem; align-items: flex-start; }
+.contact-info__icon { color: var(--gold); font-size: 1.2rem; margin-top: 0.1rem; flex-shrink: 0; }
+.contact-info__label {
+    font-family: var(--font-body); font-size: 0.75rem; font-weight: 300;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; display: block;
+}
+.contact-info__value { font-size: 1.1rem; color: var(--text-main); line-height: 1.6; }
+
+/* 13. CTA BANDI
+   ------------------------------------------------------------ */
+.cta-band { background-color: var(--bg-alt); padding: 140px 0; text-align: center; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+.cta-band h2 { color: var(--text-main); margin-bottom: 1.5rem; }
+.cta-band p { color: var(--text-muted); margin: 0 auto 3rem; font-size: 1.1rem; max-width: 50ch; }
+.cta-band .btn-group { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+
+/* 14. FOOTER
+   ------------------------------------------------------------ */
+.site-footer { background-color: var(--bg-dark); border-top: 1px solid var(--gold-muted); padding: 100px 0 0; }
+.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; padding-bottom: 4rem; border-bottom: 1px solid var(--border-light); }
+.footer-brand .brand__name { color: var(--text-main); }
+.footer-brand p { color: var(--text-muted); font-size: 0.9rem; margin-top: 1.5rem; max-width: 40ch; line-height: 1.8; }
+.footer-col h4 {
+    font-family: var(--font-body); font-size: 0.75rem; font-weight: 400;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 2rem;
+}
+.footer-col ul { display: flex; flex-direction: column; gap: 1.25rem; }
+.footer-col ul li a { font-size: 0.9rem; color: var(--text-muted); }
+.footer-col ul li a:hover { color: var(--gold); }
+.footer-bottom { padding: 2.5rem 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+.footer-bottom p { font-size: 0.8rem; color: var(--text-muted); }
+.footer-disclaimer { padding: 2.5rem 0; border-top: 1px solid var(--border-light); }
+.footer-disclaimer p { font-size: 0.8rem; color: var(--text-muted); opacity: 0.5; line-height: 1.8; text-align: center; }
+
+/* 15. HİZMETLER (İç Sayfa)
+   ------------------------------------------------------------ */
+.service-section { padding: 120px 0; border-bottom: 1px solid var(--border-light); }
+.service-section:last-of-type { border-bottom: none; }
+.service-inner { display: grid; grid-template-columns: 100px 1fr; gap: 4rem; align-items: start; }
+.service-icon {
+    width: 100px; height: 100px;
+    background-color: transparent; border: 1px solid var(--gold-muted);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; color: var(--gold); font-weight: 300; flex-shrink: 0;
+}
+
+/* 16. HAKKIMIZDA (Kurucu Profil)
+   ------------------------------------------------------------ */
+.about-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 6rem; align-items: start; }
+.about-photo {
+    background-color: transparent; border: 1px solid var(--border-light);
+    aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
+}
+
+/* 17. HARITA
+   ------------------------------------------------------------ */
+.map-wrap { width: 100%; height: 500px; background-color: var(--bg-alt); border: 1px solid var(--border-light); overflow: hidden; }
+/* Karanlık mod uyumlu harita */
+.map-wrap iframe { width: 100%; height: 100%; border: 0; filter: grayscale(100%) invert(90%) contrast(120%); }
+
+/* 18. SKIP INTRO BUTTON (intro overlay)
+   ------------------------------------------------------------ */
+.skip-intro-btn {
+    position: absolute; top: 2rem; right: 2rem;
+    background: transparent; color: var(--text-main); border: 1px solid var(--border-light);
+    padding: 0.75rem 1.5rem; font-family: var(--font-body); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+    cursor: pointer; z-index: 9999; transition: all 0.4s;
+}
+.skip-intro-btn:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-faint); }
+
+/* 19. RESPONSIVE
+   ------------------------------------------------------------ */
+@media (max-width: 900px) {
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .footer-brand { grid-column: 1 / -1; }
+    .about-grid { grid-template-columns: 1fr; gap: 4rem; }
+    .about-photo { max-width: 400px; margin: 0 auto; }
+}
+
+@media (max-width: 768px) {
+    .site-nav { display: none; }
+    .hamburger { display: flex; }
+    .header-inner { height: 70px; }
+    .section { padding: 80px 0; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    
+    .service-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .service-icon { width: 80px; height: 80px; font-size: 1.5rem; }
+    .cta-band { padding: 80px 0; }
+    .cta-band .btn-group { flex-direction: column; align-items: center; }
+    .footer-top { grid-template-columns: 1fr; gap: 3rem; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+}
+
+@media (max-width: 480px) {
+    .container { padding: 0 1.5rem; }
+    h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.8rem; }
+}
+
+/* 20. SLIDER
+   ------------------------------------------------------------ */
+.slider-wrap {
+    position: relative; width: 100%; overflow: hidden;
+    background-color: var(--bg-dark); background-size: cover; background-position: center;
+    min-height: 100vh; /* Tam ekran hero hissiyatı */
+}
+.slider-wrap::before {
+    content: ''; position: absolute; inset: 0;
+    /* Koyu temanın asaletini korumak için sol taraftaki karanlık geçişi daha dramatik yapıldı */
+    background: linear-gradient(to right, rgba(11, 19, 43, 0.95) 0%, rgba(11, 19, 43, 0.7) 40%, rgba(11, 19, 43, 0.2) 100%);
+    z-index: 1;
+}
+.slider-track { position: relative; width: 100%; min-height: 100vh; z-index: 2; }
+.slide {
+    position: absolute; inset: 0; display: flex; align-items: center;
+    padding: 0; opacity: 0; transition: opacity 1.2s ease; pointer-events: none;
+}
+.slide.active { opacity: 1; pointer-events: auto; }
+.slide-content { max-width: 1200px; margin: 0 auto; padding: 0 2rem; width: 100%; }
+.slide-content .eyebrow { color: var(--gold); margin-bottom: 2rem; }
+.slide-content h1 {
+    color: var(--text-main); max-width: 16ch; margin-bottom: 1.5rem;
+    font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2;
+}
+.slide-content p { color: var(--text-muted); max-width: 60ch; margin-bottom: 3rem; font-size: 1.1rem; line-height: 1.8; }
+.slide-actions { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+
+.slider-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+    background: transparent; border: 1px solid var(--border-light); color: var(--text-main);
+    width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 1.2rem; transition: all 0.4s; border-radius: 50%;
+}
+.slider-arrow:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-faint); }
+.slider-arrow--prev { left: 2rem; }
+.slider-arrow--next { right: 2rem; }
+
+.slider-dots { position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; z-index: 10; }
+.slider-dot { width: 10px; height: 10px; border-radius: 50%; background-color: var(--border-light); cursor: pointer; transition: all 0.4s; border: none; padding: 0; }
+.slider-dot.active { background-color: var(--gold); transform: scale(1.2); }
+
+.slider-loading {
+    display: flex; align-items: center; justify-content: center; min-height: 100vh;
+    color: var(--text-muted); font-family: var(--font-body); font-size: 0.85rem; letter-spacing: 0.2em; text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    .slider-wrap, .slider-track, .slider-loading { min-height: 80vh; }
+    .slider-arrow { display: none; }
+    .slide-content h1 { font-size: 2.5rem; }
+}
+
+#services-container, #team-grid, #articles-list, #home-cards-grid {
+    min-height: 400px;
+}
+
+.team-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: transparent;
+    border: 1px solid var(--border-light);
+    text-align: center;
+    transition: all 0.5s ease;
+}
+.team-card img, .team-card__photo {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid var(--border-light);
+    margin: 0;
+    background-color: transparent;
+    color: var(--text-muted);
+    font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+    display: flex; align-items: center; justify-content: center;
+}
+.team-card img { display: block; }
+.team-card__content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.team-card__name {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+.team-card__title {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+}
+.team-card__specialty {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-top: auto; 
+    padding-top: 1rem;
+}
+
+.articles-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+}
+.article-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: transparent;
+    border: 1px solid var(--border-light);
+    padding: 2.5rem;
+    transition: all 0.5s ease;
+}
+.article-card:hover { border-color: var(--gold); background-color: rgba(255,255,255,0.01); }
+.article-card__meta {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+}
+.article-card__title {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: var(--text-main);
+    line-height: 1.4;
+    transition: color 0.3s;
+}
+.article-card:hover .article-card__title { color: var(--gold); }
+.article-card__excerpt {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    flex-grow: 1;
+}
+.article-card__link {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-bottom: 1px solid var(--gold-muted);
+    padding-bottom: 2px;
+    align-self: flex-start;
+}
+.article-card__link:hover { border-bottom-color: var(--gold); }

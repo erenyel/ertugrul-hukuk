@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ertuğrul Hukuk Bürosu hakkında bilgi alın.">
+    <title>Hakkımızda — Ertuğrul Hukuk Bürosu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="site-header" id="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="brand" id="header-brand">
+                <span class="brand__name">Ertuğrul Hukuk</span>
+                <span class="brand__sub">Hukuk Bürosu</span>
+            </a>
+            <nav aria-label="Ana Menü">
+                <ul class="site-nav">
+                    <li><a href="index.html" class="nav-link">Ana Sayfa</a></li>
+                    <li><a href="hakkimizda.html" class="nav-link">Hakkımızda</a></li>
+                    <li><a href="hizmetlerimiz.html" class="nav-link">Hizmetlerimiz</a></li>
+                    <li><a href="ekibimiz.html" class="nav-link">Ekibimiz</a></li>
+                    <li><a href="makaleler.html" class="nav-link">Makaleler</a></li>
+                    <li><a href="iletisim.html" class="nav-link">İletişim</a></li>
+                </ul>
+            </nav>
+            <button id="hamburger" class="hamburger" aria-label="Menüyü Aç" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <nav id="mobile-nav" class="mobile-nav" aria-label="Mobil Menü">
+        <button id="mobile-nav-close" class="mobile-nav-close" aria-label="Menüyü Kapat"><i class="fas fa-times"></i></button>
+        <a href="index.html" class="nav-link">Ana Sayfa</a>
+        <a href="hakkimizda.html" class="nav-link">Hakkımızda</a>
+        <a href="hizmetlerimiz.html" class="nav-link">Hizmetlerimiz</a>
+        <a href="ekibimiz.html" class="nav-link">Ekibimiz</a>
+        <a href="makaleler.html" class="nav-link">Makaleler</a>
+        <a href="iletisim.html" class="nav-link">İletişim</a>
+    </nav>
+
+    <!-- Sayfa Başlığı -->
+    <div class="page-hero" id="page-hero-bg">
+        <div class="container">
+            <span class="eyebrow">Büromuz</span>
+            <h1>Hakkımızda</h1>
+        </div>
+    </div>
+
+    <!-- Büro Tanıtımı -->
+    <section class="section">
+        <div class="container">
+            <span class="eyebrow">Kurumsal Kimlik</span>
+            <h2 style="margin-bottom:1rem;">Ertuğrul Hukuk Bürosu</h2>
+            <div class="divider"></div>
+
+            <!-- ================================================
+                 FIREBASE ENTEGRASYON: HAKKIMIZDA METNI
+                 Koleksiyon: content/about
+                 ================================================ -->
+            <p id="about-p1" style="margin-bottom:1.25rem;">&nbsp;</p>
+            <p id="about-p2" style="margin-bottom:1.25rem;">&nbsp;</p>
+            <p id="about-p3">&nbsp;</p>
+        </div>
+    </section>
+
+    <!-- Kurucu Profili -->
+    <section class="section section--alt">
+        <div class="container">
+            <span class="eyebrow">Kurucu Avukat</span>
+            <h2 style="margin-bottom:2.5rem;">Büroyu Tanıyın</h2>
+
+            <!-- ================================================
+                 FIREBASE ENTEGRASYON: KURUCU PROFİLİ
+                 ================================================ -->
+            <div class="about-grid">
+                <div>
+                    <img id="founder-photo-el" src="" alt="Kurucu Avukat" style="width:100%;object-fit:cover;display:none;">
+                    <div class="about-photo" id="founder-photo-placeholder">
+                        <span class="placeholder-text">Fotoğraf Eklenecek</span>
+                    </div>
+                </div>
+                <div>
+                    <span class="eyebrow">Kurucu &amp; Yönetici Avukat</span>
+                    <h3 id="founder-name-el" style="margin-bottom:0.5rem;">&nbsp;</h3>
+                    <p id="founder-title-el" style="font-family:'Montserrat',sans-serif;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#6f4924;margin-bottom:.75rem;">&nbsp;</p>
+                    <div class="divider"></div>
+                    <p id="founder-bio1-el" style="margin-bottom:1rem;">&nbsp;</p>
+                    <p id="founder-bio2-el">&nbsp;</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer fb-dynamic" id="sec-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="index.html" class="brand" id="footer-brand">
+                        <span class="brand__name">Ertuğrul Hukuk</span>
+                        <span class="brand__sub">Hukuk Bürosu</span>
+                    </a>
+                    <p style="margin-top:1rem;" id="footer-tagline">&nbsp;</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Sayfalar</h4>
+                    <ul>
+                        <li><a href="index.html">Ana Sayfa</a></li>
+                        <li><a href="hakkimizda.html">Hakkımızda</a></li>
+                        <li><a href="hizmetlerimiz.html">Hizmetlerimiz</a></li>
+                        <li><a href="ekibimiz.html">Ekibimiz</a></li>
+                        <li><a href="makaleler.html">Makaleler</a></li>
+                        <li><a href="iletisim.html">İletişim</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>İletişim</h4>
+                    <ul>
+                        <li><a href="#" id="footer-phone">&nbsp;</a></li>
+                        <li><a href="#" id="footer-email">&nbsp;</a></li>
+                        <li><span id="footer-address" style="color:#e8e2d8; font-size:0.88rem;">&nbsp;</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-disclaimer">
+                <p id="footer-disclaimer">Yasal Uyarı: Bu web sitesinde yer alan bilgiler, Türkiye Barolar Birliği Meslek Kuralları ve Reklam Yasağı Yönetmeliği'ne uygun olarak yalnızca kamuyu bilgilendirme amacıyla sunulmaktadır. Ticari reklam veya hukuki mütalaa niteliği taşımaz.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Ertuğrul Hukuk Bürosu. Tüm hakları saklıdır.</p>
+                <p><a href="#" style="color:#7a8fa0;">KVKK Aydınlatma Metni</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script>
+    (function () {
+        // FOUC önleme
+        document.body.classList.add('fb-loading');
+        var done = 0, TOTAL = 3;
+        function check() { if (++done >= TOTAL) document.body.classList.remove('fb-loading'); }
+        setTimeout(function () { document.body.classList.remove('fb-loading'); }, 4000);
+
+        // Footer taglines and disclaimers from home
+        db.ref('content/home').once('value', function (snap) {
+            var d = snap.val() || {};
+            
+            // Logo loading (Yazı ve Fotoğraf Birlikte)
+            if (d.logoUrl) {
+                var textHtml = '<div style="display:flex; flex-direction:column; line-height:1.2; justify-content:center; text-align:left;"><span class="brand__name">Ertuğrul Hukuk</span><span class="brand__sub">Hukuk Bürosu</span></div>';
+                var hBrand = document.getElementById('header-brand');
+                if (hBrand) {
+                    hBrand.style.flexDirection = 'row';
+                    hBrand.style.alignItems = 'center';
+                    hBrand.innerHTML = '<img src="' + d.logoUrl + '" alt="Logo" style="height:45px; width:auto; object-fit:contain; margin-right: 12px;">' + textHtml;
+                }
+                var fBrand = document.getElementById('footer-brand');
+                if (fBrand) {
+                    fBrand.style.flexDirection = 'row';
+                    fBrand.style.alignItems = 'center';
+                    fBrand.innerHTML = '<img src="' + d.logoUrl + '" alt="Logo" style="height:55px; width:auto; object-fit:contain; margin-right: 15px;">' + textHtml;
+                }
+            }
+
+            var fTag = document.getElementById('footer-tagline');
+            if (fTag && d.footerTagline) fTag.textContent = d.footerTagline;
+            var fDisc = document.getElementById('footer-disclaimer');
+
+            var hero = document.getElementById('page-hero-bg');
+            if (hero && d.hakkimizdaBg) {
+                hero.style.backgroundImage = 'linear-gradient(rgba(11, 19, 43, 0.85), rgba(11, 19, 43, 0.85)), url("' + d.hakkimizdaBg + '")';
+                hero.style.backgroundSize = 'cover';
+                hero.style.backgroundPosition = 'center';
+            }
+    
+            if (fDisc && d.footerDisclaimer) fDisc.textContent = d.footerDisclaimer;
+            check();
+        }, function () { check(); });
+        
+
+        // content/about
+        db.ref('content/about').once('value', function (snap) {
+            var d = snap.val() || {};
+            if (d.p1) document.getElementById('about-p1').textContent = d.p1;
+            if (d.p2) document.getElementById('about-p2').textContent = d.p2;
+            var p3El = document.getElementById('about-p3');
+            if (p3El) { if (d.p3) { p3El.textContent = d.p3; p3El.style.display = ''; } else { p3El.style.display = 'none'; } }
+            if (d.founderName)  document.getElementById('founder-name-el').textContent  = d.founderName;
+            if (d.founderTitle) document.getElementById('founder-title-el').textContent = d.founderTitle;
+            if (d.bio1)         document.getElementById('founder-bio1-el').textContent  = d.bio1;
+            var bio2El = document.getElementById('founder-bio2-el');
+            if (bio2El) { if (d.bio2) { bio2El.textContent = d.bio2; bio2El.style.display = ''; } else { bio2El.style.display = 'none'; } }
+            if (d.founderPhoto) {
+                var photoEl = document.getElementById('founder-photo-el');
+                if (photoEl) { photoEl.src = d.founderPhoto; photoEl.style.display = 'block'; var ph = document.getElementById('founder-photo-placeholder'); if (ph) ph.style.display = 'none'; }
+            }
+            check();
+        }, function () { check(); });
+
+        // content/contact → footer
+        db.ref('content/contact').once('value', function (snap) {
+            var d = snap.val() || {};
+            if (d.phone) { var ph = document.getElementById('footer-phone'); if (ph) { ph.textContent = d.phone; ph.href = 'tel:' + d.phone.replace(/\s/g,''); } }
+            if (d.email) { var em = document.getElementById('footer-email'); if (em) { em.textContent = d.email; em.href = 'mailto:' + d.email; } }
+            if (d.address) { var ad = document.getElementById('footer-address'); if (ad) { ad.textContent = d.address; } }
+            check();
+        }, function () { check(); });
+    })();
+    </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var hamburger = document.getElementById('hamburger');
+    var mobileNav = document.getElementById('mobile-nav');
+    var closeBtn = document.getElementById('mobile-nav-close');
+
+    if (hamburger && mobileNav) {
+        hamburger.addEventListener('click', function() {
+            mobileNav.classList.add('open');
+        });
+    }
+    if (closeBtn && mobileNav) {
+        closeBtn.addEventListener('click', function() {
+            mobileNav.classList.remove('open');
+        });
+    }
+});
+</script>
+
+</body>
+</html>
+

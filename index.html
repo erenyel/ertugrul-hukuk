@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ertuğrul Hukuk Bürosu — Hukuki süreçlerinizde güvenilir çözüm ortağınız.">
+    <title>Ertuğrul Hukuk Bürosu</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Kılıç Animasyonu CSS (Dokunulmayacak) -->
+    <style>
+        body.intro-active {
+            overflow: hidden !important;
+        }
+
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            pointer-events: all;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+        }
+
+        #bg-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300vw;
+            height: 300vh;
+            transform: translate(-50%, -50%) rotate(28deg);
+            display: flex;
+            flex-direction: column;
+            z-index: 1;
+        }
+
+        .half {
+            width: 100%;
+            height: 50%;
+            background-color: #000000;
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+            will-change: transform;
+        }
+
+        #top-half {
+            margin-bottom: -2px;
+        }
+
+        #video-container {
+            position: absolute;
+            z-index: 10;
+            color: #d4af37;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+        }
+
+        #justitia-video {
+            width: 700px;
+            max-width: 90vw;
+            height: auto;
+            max-height: 75vh;
+            margin-bottom: 15px;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 85%, rgba(0,0,0,0));
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 85%, rgba(0,0,0,0));
+            transform: scale(1.08);
+            object-fit: contain;
+        }
+
+        @media (max-width: 767px) {
+            #justitia-video {
+                transform: none;
+                max-width: 90vw;
+            }
+        }
+
+        #video-container h1 {
+            font-family: 'Cinzel', 'Cormorant Garamond', Georgia, serif;
+            font-size: clamp(1.8rem, 5.5vw, 3.5rem);
+            margin: 0;
+            letter-spacing: clamp(2px, 1.2vw, 5px);
+            font-weight: 400;
+            text-transform: uppercase;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.9);
+            opacity: 0;
+            animation: introFadeIn 1.5s forwards 0.5s;
+        }
+
+        #video-container .subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(0.85rem, 2.5vw, 1.2rem);
+            margin-top: 8px;
+            letter-spacing: clamp(1.5px, 0.8vw, 3px);
+            font-weight: 300;
+            color: #f1f5f9;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
+            opacity: 0;
+            animation: introFadeIn 1.5s forwards 0.8s;
+        }
+
+        #slash-line {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 4px;
+            background-color: #ffffff;
+            box-shadow: 0 0 60px 20px rgba(255, 255, 255, 1), 0 0 25px 8px rgba(212, 175, 55, 1);
+            transform: translate(-50%, -50%) rotate(28deg);
+            z-index: 11;
+            opacity: 0;
+            will-change: width, opacity;
+        }
+
+        @keyframes slashAnim {
+            0% { width: 0; opacity: 1; }
+            40% { width: 150vw; opacity: 1; }
+            100% { width: 150vw; opacity: 0; }
+        }
+
+        @keyframes introFadeIn {
+            to { opacity: 1; }
+        }
+
+        .do-slash {
+            animation: slashAnim 0.35s forwards ease-out;
+        }
+    </style>
+</head>
+<body class="intro-active">
+
+    <!-- ============================================================
+         KILIÇ ANİMASYONU (DOKUNULMAYACAK)
+         ============================================================ -->
+    <div id="intro-overlay">
+        <button id="skip-intro-btn" class="skip-intro-btn" aria-label="Girişi Atla">
+            <span>Girişi Atla</span>
+            <i class="fas fa-forward" aria-hidden="true"></i>
+        </button>
+
+        <div id="bg-container">
+            <div id="top-half" class="half"></div>
+            <div id="bottom-half" class="half"></div>
+        </div>
+
+        <div id="video-container">
+            <video id="justitia-video" muted playsinline preload="auto">
+                <source src="Justice.mp4" type="video/mp4">
+            </video>
+            <h1>Talha Ertuğrul</h1>
+            <div class="subtitle">HUKUK BÜROSU</div>
+        </div>
+
+        <div id="slash-line"></div>
+    </div>
+
+    <!-- ============================================================
+         ANA SİTE (Animasyon sonrası açılır)
+         ============================================================ -->
+
+    <!-- HEADER -->
+    <header class="site-header" id="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="brand" id="header-brand" aria-label="Ana Sayfa">
+                <span class="brand__name">Ertuğrul Hukuk</span>
+                <span class="brand__sub">Hukuk Bürosu</span>
+            </a>
+
+            <nav aria-label="Ana Menü">
+                <ul class="site-nav">
+                    <li><a href="index.html" class="nav-link">Ana Sayfa</a></li>
+                    <li><a href="hakkimizda.html" class="nav-link">Hakkımızda</a></li>
+                    <li><a href="hizmetlerimiz.html" class="nav-link">Hizmetlerimiz</a></li>
+                    <li><a href="ekibimiz.html" class="nav-link">Ekibimiz</a></li>
+                    <li><a href="makaleler.html" class="nav-link">Makaleler</a></li>
+                    <li><a href="iletisim.html" class="nav-link">İletişim</a></li>
+                </ul>
+            </nav>
+
+            <button id="hamburger" class="hamburger" aria-label="Menüyü Aç" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MOBİL MENÜ -->
+    <nav id="mobile-nav" class="mobile-nav" aria-label="Mobil Menü">
+        <button id="mobile-nav-close" class="mobile-nav-close" aria-label="Menüyü Kapat">
+            <i class="fas fa-times"></i>
+        </button>
+        <a href="index.html" class="nav-link">Ana Sayfa</a>
+        <a href="hakkimizda.html" class="nav-link">Hakkımızda</a>
+        <a href="hizmetlerimiz.html" class="nav-link">Hizmetlerimiz</a>
+        <a href="ekibimiz.html" class="nav-link">Ekibimiz</a>
+        <a href="makaleler.html" class="nav-link">Makaleler</a>
+        <a href="iletisim.html" class="nav-link">İletişim</a>
+        <a href="iletisim.html" class="btn btn--outline" style="margin-top:1rem;">Randevu Al</a>
+    </nav>
+
+    <!-- SLIDER (Firebase Realtime Database'den yüklenir) -->
+    <div class="slider-wrap" id="hero-slider">
+        <div class="slider-track" id="slider-track">
+            <!-- Yükleniyor durumu -->
+            <div class="slider-loading" id="slider-loading">
+                <span>Yükleniyor...</span>
+            </div>
+        </div>
+
+        <!-- Ok Butonları -->
+        <button class="slider-arrow slider-arrow--prev" id="slider-prev" aria-label="Önceki slayt" style="display:none;">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="slider-arrow slider-arrow--next" id="slider-next" aria-label="Sonraki slayt" style="display:none;">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+
+        <!-- Nokta Navigasyonu -->
+        <div class="slider-dots" id="slider-dots"></div>
+    </div>
+
+    <!-- HİZMETLER ÖZETİ — Firebase: services -->
+    <section class="section section--alt fb-dynamic" id="sec-services">
+        <div class="container">
+            <div class="section-header">
+                <span class="eyebrow" id="home-services-eyebrow">Çalışma Alanlarımız</span>
+                <h2 id="home-services-heading">Hukuki Uzmanlık Alanlarımız</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="cards-grid" id="home-cards-grid">
+                <!-- Firebase'den yüklenecek — JS renderCards() ile -->
+            </div>
+            <div style="margin-top:2.5rem;">
+                <a href="hizmetlerimiz.html" class="btn btn--outline" id="home-services-btn">Tüm Hizmetlerimizi Görün</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- HAKKIMIZDA ÖZETİ — Firebase: content/home -->
+    <section class="section section--alt fb-dynamic" id="sec-about">
+        <div class="container">
+            <div class="about-grid">
+                <div>
+                    <img id="home-about-img" src="" alt="Ertuğrul Hukuk Bürosu" style="width:100%; object-fit:cover;">
+                </div>
+                <div>
+                    <span class="eyebrow" id="home-about-eyebrow">Kurumsal Kimliğimiz</span>
+                    <h2 style="margin-bottom:1rem;" id="home-about-heading">Ertuğrul Hukuk Bürosu</h2>
+                    <div class="divider"></div>
+                    <p style="margin-bottom:1rem;" id="home-about-p1">&nbsp;</p>
+                    <p style="margin-bottom:2rem;" id="home-about-p2">&nbsp;</p>
+                    <a href="hakkimizda.html" class="btn btn--outline-navy" id="home-about-btn">Daha Fazla Bilgi</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- İLETİŞİM BANDI — Firebase: content/home + content/contact -->
+    <div class="cta-band fb-dynamic" id="sec-cta">
+        <div class="container">
+            <span class="eyebrow" style="color:#c89d6c; display:block; text-align:center;" id="home-cta-eyebrow">İletişim</span>
+            <h2 style="margin-bottom:0.75rem;" id="home-cta-heading">Görüşmek İçin</h2>
+            <div class="btn-group">
+                <a href="#" class="btn btn--outline" id="home-cta-phone-btn">
+                    <i class="fas fa-phone"></i> <span id="home-cta-phone-text">[Telefon]</span>
+                </a>
+                <a href="iletisim.html" class="btn btn--gold" id="home-cta-link-btn">Randevu Talep Edin</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER — Firebase: content/contact -->
+    <footer class="site-footer fb-dynamic" id="sec-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="index.html" class="brand" id="footer-brand">
+                        <span class="brand__name">Ertuğrul Hukuk</span>
+                        <span class="brand__sub">Hukuk Bürosu</span>
+                    </a>
+                    <p style="margin-top:1rem;" id="footer-tagline">&nbsp;</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Sayfalar</h4>
+                    <ul>
+                        <li><a href="index.html">Ana Sayfa</a></li>
+                        <li><a href="hakkimizda.html">Hakkımızda</a></li>
+                        <li><a href="hizmetlerimiz.html">Hizmetlerimiz</a></li>
+                        <li><a href="ekibimiz.html">Ekibimiz</a></li>
+                        <li><a href="makaleler.html">Makaleler</a></li>
+                        <li><a href="iletisim.html">İletişim</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>İletişim</h4>
+                    <ul>
+                        <li><a href="#" id="footer-phone">&nbsp;</a></li>
+                        <li><a href="#" id="footer-email">&nbsp;</a></li>
+                        <li><span id="footer-address" style="color:#e8e2d8; font-size:0.88rem;">&nbsp;</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-disclaimer">
+                <p id="footer-disclaimer">Yasal Uyarı: Bu web sitesinde yer alan bilgiler, Türkiye Barolar Birliği Meslek Kuralları ve Reklam Yasağı Yönetmeliği'ne uygun olarak yalnızca kamuyu bilgilendirme amacıyla sunulmaktadır. Ticari reklam veya hukuki mütalaa niteliği taşımaz.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Ertuğrul Hukuk Bürosu. Tüm hakları saklıdır.</p>
+                <p><a href="#" style="color:#7a8fa0;">KVKK Aydınlatma Metni</a></p>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <!-- Kılıç Animasyonu JS (Dokunulmayacak) -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('justitia-video');
+            const videoContainer = document.getElementById('video-container');
+            const slash = document.getElementById('slash-line');
+            const topHalf = document.getElementById('top-half');
+            const bottomHalf = document.getElementById('bottom-half');
+            const overlay = document.getElementById('intro-overlay');
+            const skipBtn = document.getElementById('skip-intro-btn');
+
+            let sequenceEnded = false;
+            let safetyTimeoutId = null;
+
+            // 1. REPEAT VISIT CHECK (sessionStorage & URL Query)
+            let hasSeenIntro = false;
+            try {
+                hasSeenIntro = sessionStorage.getItem('ertugrul_intro_seen') === 'true';
+            } catch (err) {
+                console.warn('SessionStorage kısıtı:', err);
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const bypassIntro = urlParams.get('skip') === 'true' || window.location.hash === '#content';
+
+            if (hasSeenIntro || bypassIntro) {
+                if (overlay) overlay.style.display = 'none';
+                document.body.classList.remove('intro-active');
+                document.body.classList.add('site-revealed');
+                return;
+            }
+
+            // 2. KILIÇ KESME VE PERDE YARILMA YÜRÜTÜCÜSÜ
+            function performCurtainSplit() {
+                if (sequenceEnded) return;
+                sequenceEnded = true;
+
+                if (safetyTimeoutId) {
+                    clearTimeout(safetyTimeoutId);
+                    safetyTimeoutId = null;
+                }
+
+                try {
+                    sessionStorage.setItem('ertugrul_intro_seen', 'true');
+                } catch (e) {
+                    console.warn('SessionStorage yazılamadı:', e);
+                }
+
+                if (slash) {
+                    void slash.offsetWidth;
+                    slash.classList.add('do-slash');
+                }
+
+                setTimeout(() => {
+                    if (videoContainer) videoContainer.style.opacity = '0';
+                    if (skipBtn) skipBtn.style.opacity = '0';
+                }, 100);
+
+                setTimeout(() => {
+                    if (topHalf) topHalf.style.transform = 'translateY(-150vh)';
+                    if (bottomHalf) bottomHalf.style.transform = 'translateY(150vh)';
+                    if (overlay) overlay.style.pointerEvents = 'none';
+
+                    document.body.classList.remove('intro-active');
+                    document.body.classList.add('site-revealed');
+
+                    setTimeout(() => {
+                        if (overlay) overlay.style.display = 'none';
+                    }, 1500);
+                }, 250);
+            }
+
+            // 3. ANİMASYON SEKANSINI BAŞLAT
+            function startSequence() {
+                if (sequenceEnded) return;
+
+                if (overlay) {
+                    overlay.style.display = 'flex';
+                    overlay.style.pointerEvents = 'all';
+                }
+                if (videoContainer) videoContainer.style.opacity = '1';
+                if (slash) slash.classList.remove('do-slash');
+                if (topHalf) topHalf.style.transform = 'translateY(0)';
+                if (bottomHalf) bottomHalf.style.transform = 'translateY(0)';
+                document.body.classList.add('intro-active');
+
+                if (video) {
+                    video.currentTime = 0;
+                    video.playbackRate = 0.666;
+
+                    const playPromise = video.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => {
+                            console.warn("Otomatik oynatma engellendi, emniyet devrede:", error);
+                        });
+                    }
+                }
+
+                safetyTimeoutId = setTimeout(() => {
+                    if (!sequenceEnded) {
+                        performCurtainSplit();
+                    }
+                }, 4500);
+            }
+
+            if (video) {
+                video.addEventListener('ended', performCurtainSplit);
+                video.addEventListener('loadeddata', startSequence, { once: true });
+                if (video.readyState >= 3) {
+                    startSequence();
+                }
+            } else {
+                performCurtainSplit();
+            }
+
+            if (skipBtn) {
+                skipBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (video) video.pause();
+                    performCurtainSplit();
+                });
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', (e) => {
+                    if (!e.target.closest('#skip-intro-btn')) {
+                        performCurtainSplit();
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script src="js/main.js"></script>
+
+    <!-- Firebase SDK (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <!-- Slider JS -->
+    <script>
+    (function () {
+        var slides = [];
+        var current = 0;
+        var autoPlayTimer = null;
+        var AUTO_PLAY_MS = 5000;
+
+        var track = document.getElementById('slider-track');
+        var loading = document.getElementById('slider-loading');
+        var dotsWrap = document.getElementById('slider-dots');
+        var btnPrev = document.getElementById('slider-prev');
+        var btnNext = document.getElementById('slider-next');
+
+        // Varsayılan slayt (Firebase boşken gösterilir)
+        var DEFAULT_SLIDES = [
+            {
+                eyebrow: 'Ertuğrul Hukuk Bürosu',
+                title: 'Hukuki Süreçlerinizde Güvenilir Çözüm Ortağınız',
+                subtitle: '[Büro tanıtım metni. Admin panelinden düzenleyebilirsiniz.]',
+                btnText: 'Randevu Talep Edin',
+                btnLink: 'iletisim.html',
+                btn2Text: 'Hizmetlerimiz',
+                btn2Link: 'hizmetlerimiz.html'
+            }
+        ];
+
+        var sliderWrapEl = document.getElementById('hero-slider');
+
+        function renderSlides(data) {
+            slides = data;
+            if (!slides.length) slides = DEFAULT_SLIDES;
+
+            // Loading div'ini kaldır
+            if (loading) loading.remove();
+
+            // Slaytları oluştur
+            slides.forEach(function (s, i) {
+                var div = document.createElement('div');
+                div.className = 'slide' + (i === 0 ? ' active' : '');
+                // Her slaytın kendi arka plan görseli varsa data attribute olarak sakla
+                if (s.bgImage) div.dataset.bg = s.bgImage;
+                div.innerHTML =
+                    '<div class="slide-content">' +
+                    (s.eyebrow ? '<span class="eyebrow">' + esc(s.eyebrow) + '</span>' : '') +
+                    '<h1 style="text-transform: uppercase; font-family: \'Playfair Display\', serif; letter-spacing: 0.05em; line-height: 1.1;">' + esc(s.title || '') + '</h1>' +
+                    (s.subtitle ? '<p style="font-size: 1.1rem; line-height: 1.6; color: #e8e2d8;">' + esc(s.subtitle) + '</p>' : '') +
+                    '<div class="slide-actions">' +
+                    (s.btnText ? '<a href="' + esc(s.btnLink || '#') + '" class="btn btn--gold">' + esc(s.btnText) + '</a>' : '') +
+                    (s.btn2Text ? '<a href="' + esc(s.btn2Link || '#') + '" class="btn btn--outline">' + esc(s.btn2Text) + '</a>' : '') +
+                    '</div></div>';
+                track.appendChild(div);
+            });
+
+            // İlk slayt görselini arka plana uygula
+            applyBg(0);
+
+            // Noktaları oluştur
+            if (slides.length > 1) {
+                slides.forEach(function (_, i) {
+                    var btn = document.createElement('button');
+                    btn.className = 'slider-dot' + (i === 0 ? ' active' : '');
+                    btn.setAttribute('aria-label', (i + 1) + '. slayt');
+                    btn.addEventListener('click', function () { goTo(i); });
+                    dotsWrap.appendChild(btn);
+                });
+
+                if (btnPrev) btnPrev.style.display = 'flex';
+                if (btnNext) btnNext.style.display = 'flex';
+            }
+
+            startAutoPlay();
+        }
+
+        // Slayt arka planını slider-wrap'e uygula
+        function applyBg(index) {
+            if (!sliderWrapEl) return;
+            var slideEls = track.querySelectorAll('.slide');
+            var activeSlide = slideEls[index];
+            var bg = (activeSlide && activeSlide.dataset.bg) ? activeSlide.dataset.bg : '';
+            if (bg) {
+                sliderWrapEl.style.backgroundImage = "url('" + bg + "')";
+            } else {
+                // Varsayılan hero arka planı
+                sliderWrapEl.style.backgroundImage = "url('img/hero-bg.jpg')";
+            }
+        }
+
+        function goTo(index) {
+            var slideEls = track.querySelectorAll('.slide');
+            var dotEls = dotsWrap.querySelectorAll('.slider-dot');
+
+            if (slideEls[current]) slideEls[current].classList.remove('active');
+            if (dotEls[current]) dotEls[current].classList.remove('active');
+
+            current = (index + slides.length) % slides.length;
+
+            if (slideEls[current]) slideEls[current].classList.add('active');
+            if (dotEls[current]) dotEls[current].classList.add('active');
+
+            // Yeni slaytın arka planını uygula
+            applyBg(current);
+        }
+
+
+        function startAutoPlay() {
+            if (slides.length <= 1) return;
+            clearInterval(autoPlayTimer);
+            autoPlayTimer = setInterval(function () {
+                goTo(current + 1);
+            }, AUTO_PLAY_MS);
+        }
+
+        function esc(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        // Ok buton olayları
+        if (btnPrev) btnPrev.addEventListener('click', function () {
+            clearInterval(autoPlayTimer);
+            goTo(current - 1);
+            startAutoPlay();
+        });
+        if (btnNext) btnNext.addEventListener('click', function () {
+            clearInterval(autoPlayTimer);
+            goTo(current + 1);
+            startAutoPlay();
+        });
+
+        // Hover'da durdur
+        var sliderWrap = document.getElementById('hero-slider');
+        if (sliderWrap) {
+            sliderWrap.addEventListener('mouseenter', function () { clearInterval(autoPlayTimer); });
+            sliderWrap.addEventListener('mouseleave', startAutoPlay);
+        }
+
+        // Firebase'den slaytları yükle
+        db.ref('slider').orderByChild('order').on('value', function (snapshot) {
+            var raw = [];
+            snapshot.forEach(function (child) {
+                var s = child.val();
+                if (s && s.active !== false) {
+                    raw.push(s);
+                }
+            });
+
+            // Mevcut slaytları temizle (yeniden yükleme için)
+            var existing = track.querySelectorAll('.slide');
+            existing.forEach(function (el) { el.remove(); });
+            dotsWrap.innerHTML = '';
+            current = 0;
+            clearInterval(autoPlayTimer);
+
+            renderSlides(raw);
+        }, function (error) {
+            // Firebase bağlantı hatası — varsayılan slayt göster
+            console.warn('Firebase bağlantı hatası:', error);
+            if (loading) loading.remove();
+            renderSlides(DEFAULT_SLIDES);
+        });
+    })();
+    </script>
+
+    <!-- Ana Sayfa Firebase: Tüm İçerik Yükleyici -->
+    <script>
+    (function () {
+        /* ── Yardımcı: DOM elementi güvenli güncelle ──────────── */
+        function setText(id, val) {
+            var el = document.getElementById(id);
+            if (el && val) el.textContent = val;
+        }
+        function setHref(id, href) {
+            var el = document.getElementById(id);
+            if (el && href) el.href = href;
+        }
+
+        /* ── FOUC önleme: .fb-dynamic başlangıçta gizli ──────── */
+        document.body.classList.add('fb-loading');
+
+        /* ── Tüm veriyi paralel çek, bitince sayfayı göster ──── */
+        var done = 0;
+        var TOTAL = 3; // content/home, content/contact, services
+        function check() {
+            done++;
+            if (done >= TOTAL) reveal();
+        }
+        function reveal() {
+            document.body.classList.remove('fb-loading');
+        }
+        // Güvenlik: maksimum 4 saniye bekle
+        setTimeout(reveal, 4000);
+
+        /* ── 1. content/home ──────────────────────────────────── */
+        db.ref('content/home').once('value', function (snap) {
+            var d = snap.val() || {};
+
+            // Hakkımızda özeti
+            if (d.aboutEyebrow) setText('home-about-eyebrow', d.aboutEyebrow);
+            if (d.aboutHeading)  setText('home-about-heading',  d.aboutHeading);
+            
+            
+            if (d.aboutBtnText)  setText('home-about-btn',      d.aboutBtnText);
+            if (d.hakkimizdaBg || d.aboutImageUrl) {
+                var img = document.getElementById('home-about-img');
+                if (img) img.src = d.hakkimizdaBg || d.aboutImageUrl;
+            }
+
+            // CTA bandı
+            if (d.ctaEyebrow) setText('home-cta-eyebrow', d.ctaEyebrow);
+            if (d.ctaHeading) setText('home-cta-heading',  d.ctaHeading);
+            if (d.ctaLinkText) setText('home-cta-link-btn', d.ctaLinkText);
+
+            
+            // Logo loading (Yazı ve Fotoğraf Birlikte)
+            if (d.logoUrl) {
+                var textHtml = '<div style="display:flex; flex-direction:column; line-height:1.2; justify-content:center; text-align:left;"><span class="brand__name">Ertuğrul Hukuk</span><span class="brand__sub">Hukuk Bürosu</span></div>';
+                var hBrand = document.getElementById('header-brand');
+                if (hBrand) {
+                    hBrand.style.flexDirection = 'row';
+                    hBrand.style.alignItems = 'center';
+                    hBrand.innerHTML = '<img src="' + d.logoUrl + '" alt="Logo" style="height:45px; width:auto; object-fit:contain; margin-right: 12px;">' + textHtml;
+                }
+                var fBrand = document.getElementById('footer-brand');
+                if (fBrand) {
+                    fBrand.style.flexDirection = 'row';
+                    fBrand.style.alignItems = 'center';
+                    fBrand.innerHTML = '<img src="' + d.logoUrl + '" alt="Logo" style="height:55px; width:auto; object-fit:contain; margin-right: 15px;">' + textHtml;
+                }
+            }
+
+            // Footer tagline
+            if (d.footerTagline) setText('footer-tagline', d.footerTagline);
+
+            // Footer disclaimer
+            if (d.footerDisclaimer) setText('footer-disclaimer', d.footerDisclaimer);
+
+            check();
+        }, function () { check(); });
+
+        
+        /* ── Yeni: content/about (Hakkımızda sayfası verilerini Ana Sayfaya çekme) ── */
+        db.ref('content/about').once('value', function (snap) {
+            var d = snap.val() || {};
+            // Ana sayfadaki p1 ve p2'yi, Hakkımızda sayfasındaki p1 ve p2 ile doldur
+            if (d.p1) setText('home-about-p1', d.p1);
+            if (d.p2) setText('home-about-p2', d.p2);
+            check();
+        }, function () { check(); });
+
+        /* ── 2. content/contact ───────────────────────────────── */
+        db.ref('content/contact').once('value', function (snap) {
+            var d = snap.val() || {};
+
+            // CTA telefon butonu
+            if (d.phone) {
+                setText('home-cta-phone-text', d.phone);
+                setHref('home-cta-phone-btn', 'tel:' + d.phone.replace(/\s/g, ''));
+            }
+
+            // Footer iletişim
+            if (d.phone) {
+                setText('footer-phone', d.phone);
+                setHref('footer-phone', 'tel:' + d.phone.replace(/\s/g, ''));
+            }
+            if (d.email) {
+                setText('footer-email', d.email);
+                setHref('footer-email', 'mailto:' + d.email);
+            }
+            if (d.address) setText('footer-address', d.address);
+
+            check();
+        }, function () { check(); });
+
+        /* ── 3. services — hizmet kartları ───────────────────── */
+        db.ref('services').orderByChild('order').once('value', function (snap) {
+            var items = [];
+            snap.forEach(function (c) { items.push(c.val()); });
+
+            if (items.length) {
+                var grid = document.getElementById('home-cards-grid');
+                if (grid) {
+                    grid.innerHTML = '';
+                    // Ana sayfada en fazla 4 kart göster
+                    items.slice(0, 4).forEach(function (s) {
+                        var card = document.createElement('div');
+                        card.className = 'card';
+                        var anchor = s.anchor ? '#' + s.anchor : '';
+                        card.innerHTML =
+                            '<div class="card__icon">' + ((s.icon && (s.icon.indexOf("/") !== -1 || s.icon.indexOf(".") !== -1)) ? '<img src="' + s.icon + '" alt="" style="width: 3.5rem; height: 3.5rem; object-fit: contain; margin: 0 auto;">' : '<i class="' + (s.icon || 'fas fa-balance-scale') + '"></i>') + '</div>' +
+                            '<h3 class="card__title">' + (s.title || '') + '</h3>' +
+                            '<p class="card__text">' + (s.desc1 || '') + '</p>' +
+                            '<a href="hizmetlerimiz.html' + anchor + '" class="card__link">Detaylı Bilgi</a>';
+                        grid.appendChild(card);
+                    });
+                }
+            }
+            check();
+        }, function () { check(); });
+    })();
+    </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var hamburger = document.getElementById('hamburger');
+    var mobileNav = document.getElementById('mobile-nav');
+    var closeBtn = document.getElementById('mobile-nav-close');
+
+    if (hamburger && mobileNav) {
+        hamburger.addEventListener('click', function() {
+            mobileNav.classList.add('open');
+        });
+    }
+    if (closeBtn && mobileNav) {
+        closeBtn.addEventListener('click', function() {
+            mobileNav.classList.remove('open');
+        });
+    }
+});
+</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,17 @@
+Bu klasör, sitenizin görsellerini düzenli tutmak için kullanılır.
+
+Alt klasörler:
+• img/slider/     → Slider arka plan görselleri
+• img/ekip/       → Avukat/ekip fotoğrafları
+• img/hakkimizda/ → Hakkımızda sayfası görselleri
+• img/makaleler/  → Makale görselleri
+• img/genel/      → Genel amaçlı görseller
+• img/            → hero-bg.jpg ve diğer ana görseller
+
+Admin panelinde görsel eklerken:
+  img/slider/gorsel.jpg
+  img/ekip/avukat-adi.jpg
+  img/hakkimizda/ofis.jpg
+  img/genel/logo.png
+
+gibi kısa yolları kullanabilirsiniz.

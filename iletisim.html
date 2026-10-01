@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ertuğrul Hukuk Bürosu iletişim bilgileri ve randevu formu.">
+    <title>İletişim — Ertuğrul Hukuk Bürosu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="site-header" id="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="brand" id="header-brand">
+                <span class="brand__name">Ertuğrul Hukuk</span>
+                <span class="brand__sub">Hukuk Bürosu</span>
+            </a>
+            <nav aria-label="Ana Menü">
+                <ul class="site-nav">
+                    <li><a href="index.html" class="nav-link">Ana Sayfa</a></li>
+                    <li><a href="hakkimizda.html" class="nav-link">Hakkımızda</a></li>
+                    <li><a href="hizmetlerimiz.html" class="nav-link">Hizmetlerimiz</a></li>
+                    <li><a href="ekibimiz.html" class="nav-link">Ekibimiz</a></li>
+                    <li><a href="makaleler.html" class="nav-link">Makaleler</a></li>
+                    <li><a href="iletisim.html" class="nav-link">İletişim</a></li>
+                </ul>
+            </nav>
+            <button id="hamburger" class="hamburger" aria-label="Menüyü Aç" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <nav id="mobile-nav" class="mobile-nav" aria-label="Mobil Menü">
+        <button id="mobile-nav-close" class="mobile-nav-close" aria-label="Menüyü Kapat"><i class="fas fa-times"></i></button>
+        <a href="index.html" class="nav-link">Ana Sayfa</a>
+        <a href="hakkimizda.html" class="nav-link">Hakkımızda</a>
+        <a href="hizmetlerimiz.html" class="nav-link">Hizmetlerimiz</a>
+        <a href="ekibimiz.html" class="nav-link">Ekibimiz</a>
+        <a href="makaleler.html" class="nav-link">Makaleler</a>
+        <a href="iletisim.html" class="nav-link">İletişim</a>
+    </nav>
+
+    <div class="page-hero" id="page-hero-bg">
+        <div class="container">
+            <span class="eyebrow">Bize Ulaşın</span>
+            <h1>İletişim</h1>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:4rem;align-items:start;">
+
+                <!-- Bilgi Kutusu — Firebase'den dolar -->
+                <div>
+                    <span class="eyebrow">Ofis Bilgileri</span>
+                    <h2 style="margin-bottom:1rem;font-size:1.6rem;">Ofisimiz</h2>
+                    <div class="divider"></div>
+                    <div class="contact-info">
+                        <div class="contact-info__item">
+                            <i class="fas fa-location-dot contact-info__icon"></i>
+                            <div>
+                                <span class="contact-info__label">Adres</span>
+                                <span class="contact-info__value placeholder-text" id="ci-address">&nbsp;</span>
+                            </div>
+                        </div>
+                        <div class="contact-info__item">
+                            <i class="fas fa-phone contact-info__icon"></i>
+                            <div>
+                                <span class="contact-info__label">Telefon</span>
+                                <a href="#" class="contact-info__value placeholder-text" id="ci-phone">&nbsp;</a>
+                            </div>
+                        </div>
+                        <div class="contact-info__item" id="ci-phone2-wrap" style="display:none;">
+                            <i class="fas fa-phone contact-info__icon"></i>
+                            <div>
+                                <span class="contact-info__label">Telefon 2</span>
+                                <a href="#" class="contact-info__value" id="ci-phone2"></a>
+                            </div>
+                        </div>
+                        <div class="contact-info__item">
+                            <i class="fas fa-envelope contact-info__icon"></i>
+                            <div>
+                                <span class="contact-info__label">E-posta</span>
+                                <a href="#" class="contact-info__value placeholder-text" id="ci-email">&nbsp;</a>
+                            </div>
+                        </div>
+                        <div class="contact-info__item">
+                            <i class="fas fa-clock contact-info__icon"></i>
+                            <div>
+                                <span class="contact-info__label">Çalışma Saatleri</span>
+                                <span class="contact-info__value placeholder-text" id="ci-hours">&nbsp;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <div>
+                    <span class="eyebrow">Randevu ve Bilgi</span>
+                    <h2 style="margin-bottom:1rem;font-size:1.6rem;">Mesaj Gönderin</h2>
+                    <div class="divider"></div>
+                    <form id="contact-form" novalidate>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="name">Ad Soyad</label>
+                                <input type="text" id="name" name="name" placeholder="Adınız Soyadınız" data-required>
+                                <span class="form-error">Bu alan zorunludur.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Telefon</label>
+                                <input type="tel" id="phone" name="phone" placeholder="05XX XXX XX XX">
+                            </div>
+                            <div class="form-group form-group--full">
+                                <label for="email">E-posta</label>
+                                <input type="email" id="email" name="email" placeholder="ornek@email.com" data-required>
+                                <span class="form-error">Geçerli bir e-posta adresi giriniz.</span>
+                            </div>
+                            <div class="form-group form-group--full">
+                                <label for="subject">Konu</label>
+                                <input type="text" id="subject" name="subject" placeholder="Konuyu kısaca yazınız" data-required>
+                                <span class="form-error">Bu alan zorunludur.</span>
+                            </div>
+                            <div class="form-group form-group--full">
+                                <label for="message">Mesajınız</label>
+                                <textarea id="message" name="message" placeholder="Durumunuzu kısaca açıklayınız..." data-required></textarea>
+                                <span class="form-error">Bu alan zorunludur.</span>
+                            </div>
+                            <div class="form-group form-group--full">
+                                <p style="font-size:.78rem;color:#50606f;margin-bottom:1rem;">Gönderdiğiniz bilgiler KVKK kapsamında gizli tutulacaktır.</p>
+                                <button type="submit" class="btn btn--gold">Gönder <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                        <div id="form-success" style="display:none;margin-top:1.5rem;padding:1rem 1.25rem;background:#f0f7f0;border-left:3px solid #28a745;font-size:.9rem;color:#1c5c1c;">
+                            Mesajınız alındı. En kısa sürede sizinle iletişime geçeceğiz.
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Harita -->
+    <div class="map-wrap" id="map-wrap">
+        <iframe id="map-iframe"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d96748.39849549932!2d28.872262!3d41.015137!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14caa7040068086b%3A0xe1ccfe98bc01b0d0!2zxLBzdGFuYnVs!5e0!3m2!1str!2str!4v1700000000000"
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Konum">
+        </iframe>
+    </div>
+
+    <footer class="site-footer fb-dynamic" id="sec-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="index.html" class="brand" id="footer-brand">
+                        <span class="brand__name">Ertuğrul Hukuk</span>
+                        <span class="brand__sub">Hukuk Bürosu</span>
+                    </a>
+                    <p style="margin-top:1rem;" id="footer-tagline">&nbsp;</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Sayfalar</h4>
+                    <ul>
+                        <li><a href="index.html">Ana Sayfa</a></li>
+                        <li><a href="hakkimizda.html">Hakkımızda</a></li>
+                        <li><a href="hizmetlerimiz.html">Hizmetlerimiz</a></li>
+                        <li><a href="ekibimiz.html">Ekibimiz</a></li>
+                        <li><a href="makaleler.html">Makaleler</a></li>
+                        <li><a href="iletisim.html">İletişim</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>İletişim</h4>
+                    <ul>
+                        <li><a href="#" id="footer-phone">&nbsp;</a></li>
+                        <li><a href="#" id="footer-email">&nbsp;</a></li>
+                        <li><span id="footer-address" style="color:#e8e2d8; font-size:0.88rem;">&nbsp;</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-disclaimer">
+                <p id="footer-disclaimer">Yasal Uyarı: Bu web sitesinde yer alan bilgiler, Türkiye Barolar Birliği Meslek Kuralları ve Reklam Yasağı Yönetmeliği'ne uygun olarak yalnızca kamuyu bilgilendirme amacıyla sunulmaktadır. Ticari reklam veya hukuki mütalaa niteliği taşımaz.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Ertuğrul Hukuk Bürosu. Tüm hakları saklıdır.</p>
+                <p><a href="#" style="color:#7a8fa0;">KVKK Aydınlatma Metni</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script>
+    (function () {
+        document.body.classList.add('fb-loading');
+        setTimeout(function () { 
+        document.body.classList.remove('fb-loading'); }, 4000);
+
+        
+        // Footer taglines and disclaimers from home
+        db.ref('content/home').once('value', function (snap) {
+            var d = snap.val() || {};
+            
+            // Logo loading (Yazı ve Fotoğraf Birlikte)
+            if (d.logoUrl) {
+                var textHtml = '<div style="display:flex; flex-direction:column; line-height:1.2; justify-content:center; text-align:left;"><span class="brand__name">Ertuğrul Hukuk</span><span class="brand__sub">Hukuk Bürosu</span></div>';
+                var hBrand = document.getElementById('header-brand');
+                if (hBrand) {
+                    hBrand.style.flexDirection = 'row';
+                    hBrand.style.alignItems = 'center';
+                    hBrand.innerHTML = '<img src="' + d.logoUrl + '" alt="Logo" style="height:45px; width:auto; object-fit:contain; margin-right: 12px;">' + textHtml;
+                }
+                var fBrand = document.getElementById('footer-brand');
+                if (fBrand) {
+                    fBrand.style.flexDirection = 'row';
+                    fBrand.style.alignItems = 'center';
+                    fBrand.innerHTML = '<img src="' + d.logoUrl + '" alt="Logo" style="height:55px; width:auto; object-fit:contain; margin-right: 15px;">' + textHtml;
+                }
+            }
+
+            var fTag = document.getElementById('footer-tagline');
+            if (fTag && d.footerTagline) fTag.textContent = d.footerTagline;
+            var fDisc = document.getElementById('footer-disclaimer');
+
+            var hero = document.getElementById('page-hero-bg');
+            if (hero && d.iletisimBg) {
+                hero.style.backgroundImage = 'linear-gradient(rgba(11, 19, 43, 0.85), rgba(11, 19, 43, 0.85)), url("' + d.iletisimBg + '")';
+                hero.style.backgroundSize = 'cover';
+                hero.style.backgroundPosition = 'center';
+            }
+    
+            if (fDisc && d.footerDisclaimer) fDisc.textContent = d.footerDisclaimer;
+        });
+
+        db.ref('content/contact').once('value', function (snap) {
+            var d = snap.val() || {};
+
+            function setEl(id, val, attr, attrVal) {
+                var el = document.getElementById(id); if (!el || !val) return;
+                el.textContent = val;
+                el.classList.remove('placeholder-text');
+                if (attr) el.setAttribute(attr, attrVal || val);
+            }
+
+            setEl('ci-address', d.address);
+            setEl('ci-phone', d.phone, 'href', 'tel:' + (d.phone || '').replace(/\s/g,''));
+            setEl('ci-email', d.email, 'href', 'mailto:' + d.email);
+            setEl('ci-hours', d.hours);
+            setEl('footer-phone', d.phone, 'href', 'tel:' + (d.phone || '').replace(/\s/g,''));
+            setEl('footer-email', d.email, 'href', 'mailto:' + d.email);
+
+            if (d.phone2) {
+                var wrap = document.getElementById('ci-phone2-wrap');
+                if (wrap) wrap.style.display = 'flex';
+                var p2 = document.getElementById('ci-phone2');
+                if (p2) { p2.textContent = d.phone2; p2.href = 'tel:' + d.phone2.replace(/\s/g,''); }
+            }
+            if (d.mapUrl) {
+                var iframe = document.getElementById('map-iframe');
+                if (iframe) iframe.src = d.mapUrl;
+            }
+
+            document.body.classList.remove('fb-loading');
+        }, function () {
+            document.body.classList.remove('fb-loading');
+        });
+    // FORM GÖNDERİM İŞLEMİ
+        var form = document.getElementById('contact-form');
+        if (form) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                var isValid = true;
+                form.querySelectorAll('[data-required]').forEach(function (el) {
+                    if (!el.value.trim()) { el.parentElement.classList.add('has-error'); isValid = false; }
+                    else { el.parentElement.classList.remove('has-error'); }
+                });
+                if (!isValid) return;
+
+                var btn = form.querySelector('button[type="submit"]');
+                var oldBtn = btn.innerHTML;
+                btn.disabled = true;
+                btn.textContent = 'Gönderiliyor...';
+
+                var data = {
+                    name: document.getElementById('name').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    subject: document.getElementById('subject').value.trim(),
+                    message: document.getElementById('message').value.trim(),
+                    timestamp: Date.now(),
+                    read: false
+                };
+
+                db.ref('messages').push(data).then(function () {
+                    form.reset();
+                    var suc = document.getElementById('form-success');
+                    if (suc) {
+                        suc.style.display = 'block';
+                        setTimeout(function() { suc.style.display = 'none'; }, 5000);
+                    }
+                    btn.disabled = false;
+                    btn.innerHTML = oldBtn;
+                }).catch(function (error) {
+                    alert('Hata: ' + error.message);
+                    btn.disabled = false;
+                    btn.innerHTML = oldBtn;
+                });
+            });
+            
+            // Hata temizleme
+            form.querySelectorAll('[data-required]').forEach(function (el) {
+                el.addEventListener('input', function() { el.parentElement.classList.remove('has-error'); });
+            });
+        }
+
+            
+    })();
+    </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var hamburger = document.getElementById('hamburger');
+    var mobileNav = document.getElementById('mobile-nav');
+    var closeBtn = document.getElementById('mobile-nav-close');
+
+    if (hamburger && mobileNav) {
+        hamburger.addEventListener('click', function() {
+            mobileNav.classList.add('open');
+        });
+    }
+    if (closeBtn && mobileNav) {
+        closeBtn.addEventListener('click', function() {
+            mobileNav.classList.remove('open');
+        });
+    }
+});
+</script>
+
+</body>
+</html>
+

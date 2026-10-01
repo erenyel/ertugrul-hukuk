@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Paneli — Ertuğrul Hukuk Bürosu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: #f4f5f7; color: #1c1c1c; min-height: 100vh; }
+
+        /* GİRİŞ */
+        #login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #00305b; }
+        .login-box { background: #fff; padding: 2.5rem 2rem; width: 100%; max-width: 380px; }
+        .login-box h1 { font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #00305b; margin-bottom: 0.25rem; }
+        .login-box p { font-size: 0.82rem; color: #50606f; margin-bottom: 2rem; }
+        .login-box label { display: block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #50606f; margin-bottom: 0.35rem; margin-top: 1rem; }
+        .login-box input { width: 100%; padding: 0.7rem 0.9rem; border: 1px solid #d4cfc8; font-family: 'Inter', sans-serif; font-size: 0.95rem; outline: none; }
+        .login-box input:focus { border-color: #00305b; }
+        .login-box button { width: 100%; margin-top: 1.5rem; padding: 0.8rem; background: #6f4924; color: #fff; border: none; font-family: 'Montserrat', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
+        .login-box button:hover { background: #5a3a1a; }
+        #login-error { margin-top: 1rem; font-size: 0.82rem; color: #c0392b; display: none; }
+
+        /* ADMIN LAYOUT */
+        #admin-screen { display: none; min-height: 100vh; }
+        .admin-layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+
+        /* Sidebar */
+        .sidebar { background: #00305b; display: flex; flex-direction: column; }
+        .sidebar-logo { padding: 1.5rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .sidebar-logo span { display: block; font-family: 'Montserrat', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #faf8f5; }
+        .sidebar-logo small { font-size: 0.65rem; color: #d4a96a; letter-spacing: 0.1em; }
+        .sidebar-nav { flex: 1; padding: 1rem 0; }
+        .sidebar-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.25rem; font-size: 0.82rem; color: #c8d8e8; cursor: pointer; border: none; background: none; width: 100%; text-align: left; transition: background-color 0.15s, color 0.15s; text-decoration: none; }
+        .sidebar-link i { width: 16px; text-align: center; font-size: 0.8rem; }
+        .sidebar-link:hover { background: rgba(255,255,255,0.07); color: #faf8f5; }
+        .sidebar-link.active { background: rgba(255,255,255,0.12); color: #faf8f5; border-left: 3px solid #d4a96a; }
+        .sidebar-footer { padding: 1rem 1.25rem; border-top: 1px solid rgba(255,255,255,0.08); }
+        .sidebar-footer button { background: none; border: 1px solid rgba(255,255,255,0.2); color: #c8d8e8; font-size: 0.75rem; padding: 0.5rem 1rem; cursor: pointer; width: 100%; font-family: 'Montserrat', sans-serif; letter-spacing: 0.08em; }
+        .sidebar-footer button:hover { background: rgba(255,255,255,0.08); }
+
+        /* Main */
+        .admin-main { display: flex; flex-direction: column; }
+        .admin-topbar { background: #fff; border-bottom: 1px solid #e5e0d8; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+        .admin-topbar h2 { font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #00305b; }
+        .admin-topbar span { font-size: 0.8rem; color: #50606f; }
+        .admin-content { padding: 2rem; flex: 1; }
+
+        /* Panels */
+        .panel { display: none; }
+        .panel.active { display: block; }
+
+        /* Cards */
+        .admin-card { background: #fff; border: 1px solid #e5e0d8; padding: 1.5rem; margin-bottom: 1rem; }
+        .admin-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+        .admin-card-header h3 { font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #00305b; }
+        .info-card { border-left: 3px solid #d4a96a; }
+        .info-card p { font-size: 0.82rem; color: #50606f; line-height: 1.7; }
+
+        /* Buttons */
+        .btn-primary { background: #6f4924; color: #fff; border: none; padding: 0.55rem 1.25rem; font-family: 'Montserrat', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+        .btn-primary:hover { background: #5a3a1a; }
+        .btn-primary:disabled { opacity: 0.6; cursor: default; }
+        .btn-navy { background: #00305b; color: #fff; border: none; padding: 0.55rem 1.25rem; font-family: 'Montserrat', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+        .btn-navy:hover { background: #001e38; }
+        .btn-danger { background: none; color: #c0392b; border: 1px solid #c0392b; padding: 0.4rem 0.75rem; font-size: 0.72rem; cursor: pointer; }
+        .btn-danger:hover { background: #c0392b; color: #fff; }
+        .btn-secondary { background: none; color: #00305b; border: 1px solid #00305b; padding: 0.4rem 0.75rem; font-size: 0.72rem; cursor: pointer; }
+        .btn-secondary:hover { background: #00305b; color: #fff; }
+
+        /* Forms */
+        .form-row { margin-bottom: 1rem; }
+        .form-row label { display: block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #50606f; margin-bottom: 0.35rem; }
+        .form-row input, .form-row textarea, .form-row select { width: 100%; padding: 0.65rem 0.9rem; border: 1px solid #d4cfc8; font-family: 'Inter', sans-serif; font-size: 0.9rem; outline: none; background: #fff; }
+        .form-row input:focus, .form-row textarea:focus, .form-row select:focus { border-color: #00305b; }
+        .form-row textarea { resize: vertical; min-height: 80px; }
+        .form-row input[type="checkbox"] { width: auto; }
+        .form-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .checkbox-row { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; }
+        .checkbox-row label { text-transform: none; letter-spacing: 0; font-size: 0.85rem; color: #1c1c1c; margin-bottom: 0; }
+        .form-section-title { font-family: 'Montserrat', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #00305b; padding: 0.75rem 0 0.5rem; border-bottom: 1px solid #e5e0d8; margin-bottom: 1rem; }
+
+        /* List items */
+        .list-item { background: #faf8f5; border: 1px solid #e5e0d8; padding: 1rem 1.25rem; margin-bottom: 0.75rem; display: flex; align-items: flex-start; gap: 1rem; }
+        .list-item-body { flex: 1; }
+        .list-item-body strong { display: block; font-size: 0.95rem; color: #00305b; margin-bottom: 0.2rem; }
+        .list-item-body span { font-size: 0.82rem; color: #50606f; }
+        .list-item-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+        .badge { display: inline-block; padding: 0.18rem 0.45rem; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-left: 0.5rem; }
+        .badge-active { background: #d4edda; color: #155724; }
+        .badge-inactive { background: #f8d7da; color: #721c24; }
+        .badge-cat { background: #e2e8f0; color: #475569; }
+
+        /* Modal */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 1rem; }
+        .modal-overlay.open { display: flex; }
+        .modal { background: #fff; width: 100%; max-width: 560px; max-height: 92vh; overflow-y: auto; padding: 2rem; }
+        .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+        .modal-header h3 { font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #00305b; }
+        .modal-close { background: none; border: none; font-size: 1.1rem; cursor: pointer; color: #50606f; }
+        .modal-footer { margin-top: 1.5rem; display: flex; gap: 0.75rem; justify-content: flex-end; }
+        .modal-error { color: #c0392b; font-size: 0.82rem; margin-top: 0.5rem; display: none; }
+
+        /* Toast */
+        #toast { position: fixed; bottom: 2rem; right: 2rem; background: #00305b; color: #faf8f5; padding: 0.75rem 1.5rem; font-size: 0.85rem; z-index: 9999; transform: translateY(80px); opacity: 0; transition: transform 0.3s, opacity 0.3s; pointer-events: none; }
+        #toast.show { transform: translateY(0); opacity: 1; }
+        #toast.error { background: #c0392b; }
+
+        /* Photo preview */
+        .photo-preview { width: 80px; height: 80px; object-fit: cover; border: 1px solid #e5e0d8; display: none; margin-top: 0.5rem; }
+        .photo-preview.visible { display: block; }
+    
+    
+    
+
+    #mobile-menu-btn { display: none; background: none; border: none; font-size: 1.25rem; cursor: pointer; color: #00305b; margin-right: 0.5rem; }
+    .admin-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
+    .admin-overlay.open { display: block; }
+    
+    @media (max-width: 768px) {
+        .admin-layout { grid-template-columns: 1fr; }
+        .sidebar { position: fixed; top: 0; left: -100%; height: 100vh; width: 260px; z-index: 1000; transition: left 0.3s ease; box-shadow: 2px 0 10px rgba(0,0,0,0.1); }
+        .sidebar.open { left: 0; }
+        .main-content { margin-left: 0; }
+        .topbar { padding: 1rem; justify-content: flex-start; }
+        #mobile-menu-btn { display: block; }
+        .form-2col { grid-template-columns: 1fr; }
+        #panel-title { font-size: 1.1rem; }
+        .card { padding: 1rem; }
+    }
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     GİRİŞ EKRANI
+     ============================================================ -->
+<div id="login-screen">
+    <div class="login-box">
+        <h1>Ertuğrul Hukuk</h1>
+        <p>Admin Paneli — Lütfen giriş yapınız</p>
+        <label for="admin-email">E-posta</label>
+        <input type="email" id="admin-email" placeholder="admin@example.com">
+        <label for="admin-password">Şifre</label>
+        <input type="password" id="admin-password" placeholder="••••••••">
+        <button id="login-btn">Giriş Yap</button>
+        <div id="login-error"></div>
+    </div>
+</div>
+
+<!-- ============================================================
+     ADMIN EKRANI
+     ============================================================ -->
+<div id="admin-screen">
+    <div class="admin-overlay" id="admin-overlay"></div>
+    <div class="admin-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <span>Ertuğrul Hukuk</span>
+                <small>Admin Paneli</small>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="sidebar-link active" data-panel="slider"><i class="fas fa-images"></i> Slider</button>
+                <button class="sidebar-link" data-panel="anasayfa"><i class="fas fa-home"></i> Ana Sayfa</button>
+                <button class="sidebar-link" data-panel="hakkimizda"><i class="fas fa-building"></i> Hakkımızda</button>
+                <button class="sidebar-link" data-panel="hizmetler"><i class="fas fa-briefcase"></i> Hizmetler</button>
+                <button class="sidebar-link" data-panel="ekip"><i class="fas fa-users"></i> Ekip Üyeleri</button>
+                <button class="sidebar-link" data-panel="makaleler"><i class="fas fa-newspaper"></i> Makaleler</button>
+                <button class="sidebar-link" data-panel="mesajlar"><i class="fas fa-envelope"></i> Gelen Mesajlar <span id="msg-badge" style="background:#e74c3c;color:#fff;font-size:0.7rem;padding:2px 6px;border-radius:10px;margin-left:auto;display:none;"></span></button>
+                <button class="sidebar-link" data-panel="iletisim"><i class="fas fa-phone"></i> İletişim</button>
+                <a href="index.html" class="sidebar-link" target="_blank"><i class="fas fa-external-link-alt"></i> Siteyi Görüntüle</a>
+
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</button>
+            </div>
+        </aside>
+
+        <!-- ANA İÇERİK -->
+        <div class="admin-main">
+            <div class="admin-topbar">
+                <button id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+                <h2 id="panel-title" style="flex:1;">Slider Yönetimi</h2>
+                <span id="admin-user-email"></span>
+            </div>
+            <div class="admin-content">
+
+                <!-- ─── SLIDER PANELİ ─── -->
+                <div id="panel-slider" class="panel active">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3>Slaytlar</h3>
+                            <button class="btn-primary" id="add-slide-btn"><i class="fas fa-plus"></i> Yeni Slayt</button>
+                        </div>
+                        <div id="slides-list"><p style="color:#9ca3af;font-size:.85rem;">Yükleniyor...</p></div>
+                    </div>
+                    <div class="admin-card info-card">
+                        <p><strong style="color:#00305b;">💡 Bilgi:</strong> Slaytlar "Sıra" değerine göre soldan sağa dizilir. "Aktif" seçilmezse slayt sitede görünmez. Değişiklikler anında yansır.</p>
+                    </div>
+                </div>
+
+                <!-- ─── HAKKIMIZDA PANELİ ─── -->
+                <!-- ════════════════════════════════════════════
+                     ANA SAYFA PANELİ
+                     Firebase: content/home
+                     ════════════════════════════════════════════ -->
+                <div id="panel-anasayfa" class="panel">
+                    
+                    <div class="admin-card" style="margin-bottom:1.5rem;">
+                        <div class="admin-card-header"><h3>Site Logosu</h3></div>
+                        <div class="form-row">
+                            <label>Logo URL (örn: img/genel/logo.png)</label>
+                            <input type="text" id="home-logoUrl" placeholder="img/genel/logo.png">
+                            <p style="font-size:0.72rem;color:#9ca3af;margin-top:0.4rem;">Boş bırakırsanız mevcut metin logo (Ertuğrul Hukuk) kullanılır.</p>
+                        </div>
+                    </div>
+<div class="admin-card">
+                        <div class="admin-card-header"><h3>Hakkımızda Özeti (Ana Sayfa)</h3></div>
+                        <div class="form-row"><label>Üst Başlık (Eyebrow)</label><input type="text" id="home-aboutEyebrow" placeholder="Kurumsal Kimliğimiz"></div>
+                        <div class="form-row"><label>Başlık</label><input type="text" id="home-aboutHeading" placeholder="Ertuğrul Hukuk Bürosu"></div>
+                        <div class="form-row"><label>1. Paragraf</label><textarea id="home-aboutP1" rows="4" placeholder="Büro hakkında birinci paragraf..."></textarea></div>
+                        <div class="form-row"><label>2. Paragraf</label><textarea id="home-aboutP2" rows="4" placeholder="Büro hakkında ikinci paragraf..."></textarea></div>
+                        <div class="form-row"><label>Görsel URL (Hakkımızda resmi)</label><input type="url" id="home-aboutImageUrl" placeholder="https://..."></div>
+                        <div class="form-row"><label>"Daha Fazla Bilgi" Buton Metni</label><input type="text" id="home-aboutBtnText" placeholder="Daha Fazla Bilgi"></div>
+                    </div>
+                    <div class="admin-card" style="margin-top:1.5rem;">
+                        <div class="admin-card-header"><h3>İletişim Bandı (CTA)</h3></div>
+                        <div class="form-row"><label>Üst Başlık (Eyebrow)</label><input type="text" id="home-ctaEyebrow" placeholder="İletişim"></div>
+                        <div class="form-row"><label>Ana Başlık</label><input type="text" id="home-ctaHeading" placeholder="Görüşmek İçin"></div>
+                        <div class="form-row"><label>Buton Metni ("Randevu" butonu)</label><input type="text" id="home-ctaLinkText" placeholder="Randevu Talep Edin"></div>
+                    </div>
+                    <div class="admin-card" style="margin-top:1.5rem;">
+                        <div class="admin-card-header"><h3>Footer Bilgileri</h3></div>
+                        <div class="form-row"><label>Footer Tagline (Logo altındaki kısa açıklama)</label><input type="text" id="home-footerTagline" placeholder="Hukuki süreçlerinizde güvenilir ortağınız..."></div>
+                        <div class="form-row"><label>Footer Yasal Uyarı Metni</label><textarea id="home-footerDisclaimer" rows="3" placeholder="Yasal Uyarı: ..."></textarea></div>
+                    </div>
+                    
+                    <div class="admin-card" style="margin-top:1.5rem;">
+                        <div class="admin-card-header"><h3>Alt Sayfa Üst Görselleri</h3></div>
+                        <p style="font-size:0.8rem; color:#6b7280; margin-bottom:1rem;">Alt sayfaların (Hakkımızda vb.) en üstünde yer alan başlık alanlarının arka plan görsellerini (img/genel/bg.jpg formatında) buradan belirleyebilirsiniz.</p>
+                        
+                        <div class="form-2col">
+                            <div class="form-group">
+                                <label>Hakkımızda</label>
+                                <input type="text" id="bg-hakkimizda" placeholder="img/genel/bg.jpg">
+                            </div>
+                            <div class="form-group">
+                                <label>Hizmetlerimiz</label>
+                                <input type="text" id="bg-hizmetler" placeholder="img/genel/bg.jpg">
+                            </div>
+                            <div class="form-group">
+                                <label>Ekibimiz</label>
+                                <input type="text" id="bg-ekip" placeholder="img/genel/bg.jpg">
+                            </div>
+                            <div class="form-group">
+                                <label>Makaleler</label>
+                                <input type="text" id="bg-makaleler" placeholder="img/genel/bg.jpg">
+                            </div>
+                            <div class="form-group">
+                                <label>İletişim</label>
+                                <input type="text" id="bg-iletisim" placeholder="img/genel/bg.jpg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:1.5rem;">
+                        <button class="btn-save" id="save-anasayfa-btn"><i class="fas fa-save"></i> Ana Sayfa İçeriğini Kaydet</button>
+                    </div>
+                </div>
+
+                <div id="panel-hakkimizda" class="panel">
+
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3>Büro Tanıtım Metni</h3></div>
+                        <div class="form-row"><label>1. Paragraf</label><textarea id="about-p1" rows="4" placeholder="Büro hakkında birinci paragraf..."></textarea></div>
+                        <div class="form-row"><label>2. Paragraf</label><textarea id="about-p2" rows="4" placeholder="İkinci paragraf..."></textarea></div>
+                        <div class="form-row"><label>3. Paragraf (Opsiyonel)</label><textarea id="about-p3" rows="3" placeholder="Üçüncü paragraf..."></textarea></div>
+                    </div>
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3>Kurucu Avukat Profili</h3></div>
+                        <div class="form-2col">
+                            <div class="form-row"><label>Ad Soyad</label><input type="text" id="founder-name" placeholder="Av. İsim Soyisim"></div>
+                            <div class="form-row"><label>Unvan</label><input type="text" id="founder-title" placeholder="Kurucu Avukat"></div>
+                        </div>
+                        <div class="form-row">
+                            <label>Fotoğraf URL'si</label>
+                            <input type="url" id="founder-photo" placeholder="img/hakkimizda/kurucu.jpg  veya  https://...">
+                            <p style="font-size:.72rem;color:#9ca3af;margin-top:.3rem;">💡 Fotoğrafı <code>img/hakkimizda/</code> klasörüne atıp kısa yolunu yazın</p>
+                            <img id="founder-photo-preview" class="photo-preview" alt="Önizleme">
+                        </div>
+
+                        <div class="form-row"><label>Biyografi (1. paragraf)</label><textarea id="founder-bio1" rows="4" placeholder="Kurucu biyografisi..."></textarea></div>
+                        <div class="form-row"><label>Biyografi (2. paragraf, opsiyonel)</label><textarea id="founder-bio2" rows="3" placeholder="Devam paragrafı..."></textarea></div>
+                        <button class="btn-primary" id="save-about-btn">Kaydet</button>
+                    </div>
+                </div>
+
+                <!-- ─── HİZMETLER PANELİ ─── -->
+                <div id="panel-hizmetler" class="panel">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3>Hizmet Alanları</h3>
+                            <button class="btn-primary" id="add-service-btn"><i class="fas fa-plus"></i> Yeni Hizmet</button>
+                        </div>
+                        <div id="services-list"><p style="color:#9ca3af;font-size:.85rem;">Yükleniyor...</p></div>
+                    </div>
+                    <div class="admin-card info-card">
+                        <p><strong style="color:#00305b;">💡 Bilgi:</strong> Hizmetler sitede "Sıra" değerine göre listelenir. Anchor (ID) alanı, sayfa içi bağlantılar için kullanılır (örn: "ceza" → hizmetlerimiz.html#ceza).</p>
+                    </div>
+                </div>
+
+                <!-- ─── EKİP PANELİ ─── -->
+                <div id="panel-ekip" class="panel">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3>Ekip Üyeleri</h3>
+                            <button class="btn-primary" id="add-member-btn"><i class="fas fa-plus"></i> Yeni Üye</button>
+                        </div>
+                        <div id="members-list"><p style="color:#9ca3af;font-size:.85rem;">Yükleniyor...</p></div>
+                    </div>
+                </div>
+
+                <!-- ─── MAKALELER PANELİ ─── -->
+                <div id="panel-makaleler" class="panel">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3>Makaleler</h3>
+                            <button class="btn-primary" id="add-article-btn"><i class="fas fa-plus"></i> Yeni Makale</button>
+                        </div>
+                        <div id="articles-list"><p style="color:#9ca3af;font-size:.85rem;">Yükleniyor...</p></div>
+                    </div>
+                </div>
+
+                
+                <!-- ─── MESAJLAR PANELİ ─── -->
+                <div id="panel-mesajlar" class="panel">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3>İletişim Formu Mesajları</h3>
+                        </div>
+                        <div id="messages-list"><p style="color:#9ca3af;font-size:.85rem;">Yükleniyor...</p></div>
+                    </div>
+                </div>
+    
+
+                <!-- ─── İLETİŞİM PANELİ ─── -->
+                <div id="panel-iletisim" class="panel">
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3>İletişim Bilgileri</h3></div>
+                        <div class="form-row"><label>Adres</label><textarea id="contact-address" rows="2" placeholder="Ofis adresi..."></textarea></div>
+                        <div class="form-2col">
+                            <div class="form-row"><label>Telefon</label><input type="text" id="contact-phone" placeholder="0212 XXX XX XX"></div>
+                            <div class="form-row"><label>E-posta</label><input type="email" id="contact-email" placeholder="info@example.com"></div>
+                        </div>
+                        <div class="form-2col">
+                            <div class="form-row"><label>Çalışma Saatleri</label><input type="text" id="contact-hours" placeholder="Hafta içi 09:00 – 18:00"></div>
+                            <div class="form-row"><label>Telefon 2 (Opsiyonel)</label><input type="text" id="contact-phone2" placeholder="0532 XXX XX XX"></div>
+                        </div>
+                        <div class="form-row"><label>Google Haritalar Embed URL</label><input type="url" id="contact-map" placeholder="https://www.google.com/maps/embed?pb=..."><p style="font-size:.75rem;color:#9ca3af;margin-top:.3rem;">Google Maps → Paylaş → Haritayı göm → HTML'i kopyala → src="..." kısmını yapıştır.</p></div>
+                        <button class="btn-primary" id="save-contact-btn">Kaydet</button>
+                    </div>
+                </div>
+
+            </div><!-- /admin-content -->
+        </div><!-- /admin-main -->
+    </div>
+</div>
+
+<!-- ============================================================
+     MODALLAR
+     ============================================================ -->
+
+<!-- Slider Modal -->
+<div class="modal-overlay" id="slide-modal">
+    <div class="modal">
+        <div class="modal-header"><h3 id="slide-modal-title">Yeni Slayt</h3><button class="modal-close" data-modal="slide-modal"><i class="fas fa-times"></i></button></div>
+        <div class="form-row"><label>Başlık *</label><input type="text" id="slide-title" placeholder="Büyük başlık metni"></div>
+        <div class="form-row"><label>Alt Başlık</label><textarea id="slide-subtitle" placeholder="Açıklama metni (opsiyonel)"></textarea></div>
+        <div class="form-row"><label>Üst Etiket (Eyebrow)</label><input type="text" id="slide-eyebrow" placeholder="Ertuğrul Hukuk Bürosu"></div>
+        <div class="form-row">
+            <label>Arka Plan Görseli</label>
+            <input type="text" id="slide-bg-image" placeholder="img/slider/gorsel.jpg  veya  https://...">
+            <p style="font-size:.72rem;color:#9ca3af;margin-top:.3rem;">
+                💡 Görseli <code>img/slider/</code> klasörüne atıp kısa yolunu yazın (örn: <code>img/slider/hukuk.jpg</code>)<br>
+                Boş bırakılırsa genel hero arka planı kullanılır.
+            </p>
+            <img id="slide-bg-preview" class="photo-preview" alt="Önizleme" style="margin-top:.5rem;max-height:120px;width:100%;object-fit:cover;border-radius:4px;display:none;">
+        </div>
+        <div class="form-2col">
+            <div class="form-row"><label>1. Buton Metni</label><input type="text" id="slide-btn-text" placeholder="Randevu Talep Edin"></div>
+            <div class="form-row"><label>1. Buton Linki</label><input type="text" id="slide-btn-link" placeholder="iletisim.html"></div>
+        </div>
+        <div class="form-2col">
+            <div class="form-row"><label>2. Buton Metni</label><input type="text" id="slide-btn2-text" placeholder="Hizmetlerimiz"></div>
+            <div class="form-row"><label>2. Buton Linki</label><input type="text" id="slide-btn2-link" placeholder="hizmetlerimiz.html"></div>
+        </div>
+        <div class="form-2col">
+            <div class="form-row"><label>Sıra</label><input type="number" id="slide-order" value="1" min="1"></div>
+            <div class="form-row" style="display:flex;align-items:flex-end;"><div class="checkbox-row"><input type="checkbox" id="slide-active" checked><label for="slide-active">Aktif (sitede görünsün)</label></div></div>
+        </div>
+        <div class="modal-error" id="slide-modal-error"></div>
+        <div class="modal-footer"><button class="btn-secondary" data-modal="slide-modal">İptal</button><button class="btn-primary" id="slide-save-btn">Kaydet</button></div>
+    </div>
+</div>
+
+
+<!-- Hizmet Modal -->
+<div class="modal-overlay" id="service-modal">
+    <div class="modal">
+        <div class="modal-header"><h3 id="service-modal-title">Yeni Hizmet</h3><button class="modal-close" data-modal="service-modal"><i class="fas fa-times"></i></button></div>
+        <div class="form-2col">
+            <div class="form-row"><label>Başlık *</label><input type="text" id="svc-title" placeholder="Ceza Hukuku"></div>
+            <div class="form-row"><label>Anchor ID</label><input type="text" id="svc-anchor" placeholder="ceza"></div>
+        </div>
+        <div class="form-2col">
+            <div class="form-row"><label>İkon (Sınıf veya Görsel Yolu)</label><input type="text" id="svc-icon" placeholder="fas fa-gavel  veya  img/genel/ikon.png">
+<p style="font-size:.72rem;color:#9ca3af;margin-top:.3rem;">💡 FontAwesome sınıfı veya <code>img/genel/</code> klasöründeki ikon yolunu girebilirsiniz.</p></div>
+            <div class="form-row"><label>Sıra</label><input type="number" id="svc-order" value="1" min="1"></div>
+        </div>
+        <div class="form-row"><label>Açıklama (1. paragraf) *</label><textarea id="svc-desc1" rows="4" placeholder="Hizmet açıklaması..."></textarea></div>
+        <div class="form-row"><label>Açıklama (2. paragraf, opsiyonel)</label><textarea id="svc-desc2" rows="3" placeholder="Devam paragrafı..."></textarea></div>
+        <div class="modal-error" id="service-modal-error"></div>
+        <div class="modal-footer"><button class="btn-secondary" data-modal="service-modal">İptal</button><button class="btn-primary" id="service-save-btn">Kaydet</button></div>
+    </div>
+</div>
+
+<!-- Ekip Modal -->
+<div class="modal-overlay" id="member-modal">
+    <div class="modal">
+        <div class="modal-header"><h3 id="member-modal-title">Yeni Ekip Üyesi</h3><button class="modal-close" data-modal="member-modal"><i class="fas fa-times"></i></button></div>
+        <div class="form-2col">
+            <div class="form-row"><label>Ad Soyad *</label><input type="text" id="mbr-name" placeholder="Av. İsim Soyisim"></div>
+            <div class="form-row"><label>Unvan *</label><input type="text" id="mbr-title" placeholder="Avukat"></div>
+        </div>
+        <div class="form-2col">
+            <div class="form-row"><label>Uzmanlık Alanı</label><input type="text" id="mbr-specialty" placeholder="Ceza Hukuku"></div>
+            <div class="form-row"><label>Sıra</label><input type="number" id="mbr-order" value="1" min="1"></div>
+        </div>
+        <div class="form-row">
+            <label>Fotoğraf URL'si</label>
+            <input type="url" id="mbr-photo" placeholder="img/ekip/avukat-adi.jpg  veya  https://...">
+            <p style="font-size:.72rem;color:#9ca3af;margin-top:.3rem;">💡 Fotoğrafı <code>img/ekip/</code> klasörüne atıp kısa yolunu yazın (örn: <code>img/ekip/av-ali-yilmaz.jpg</code>)</p>
+            <img id="mbr-photo-preview" class="photo-preview" alt="Önizleme">
+        </div>
+        <div class="modal-error" id="member-modal-error"></div>
+        <div class="modal-footer"><button class="btn-secondary" data-modal="member-modal">İptal</button><button class="btn-primary" id="member-save-btn">Kaydet</button></div>
+    </div>
+</div>
+
+
+<!-- Makale Modal -->
+<div class="modal-overlay" id="article-modal">
+    <div class="modal">
+        <div class="modal-header"><h3 id="article-modal-title">Yeni Makale</h3><button class="modal-close" data-modal="article-modal"><i class="fas fa-times"></i></button></div>
+        <div class="form-row"><label>Başlık *</label><input type="text" id="art-title" placeholder="Makale başlığı..."></div>
+        <div class="form-row"><label>Özet (Excerpt) *</label><textarea id="art-excerpt" rows="3" placeholder="Makale kısa özeti..."></textarea></div>
+        <div class="form-row"><label>İçerik (tam metin, opsiyonel)</label><textarea id="art-content" rows="6" placeholder="Makalenin tam metni..."></textarea></div>
+        <div class="form-2col">
+            <div class="form-row">
+                <label>Kategori</label>
+                <select id="art-category">
+                    <option value="Ceza Hukuku">Ceza Hukuku</option>
+                    <option value="Ticaret Hukuku">Ticaret Hukuku</option>
+                    <option value="Gayrimenkul Hukuku">Gayrimenkul Hukuku</option>
+                    <option value="İş Hukuku">İş Hukuku</option>
+                    <option value="Aile Hukuku">Aile Hukuku</option>
+                    <option value="İcra ve İflas">İcra ve İflas</option>
+                    <option value="Genel">Genel</option>
+                </select>
+            </div>
+            <div class="form-row"><label>Tarih</label><input type="date" id="art-date"></div>
+        </div>
+        <div class="form-row"><div class="checkbox-row"><input type="checkbox" id="art-active" checked><label for="art-active">Aktif (sitede görünsün)</label></div></div>
+        <div class="modal-error" id="article-modal-error"></div>
+        <div class="modal-footer"><button class="btn-secondary" data-modal="article-modal">İptal</button><button class="btn-primary" id="article-save-btn">Kaydet</button></div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+
+<script>
+(function () {
+    'use strict';
+
+    // ── YARDIMCILAR ──────────────────────────────────────────────
+
+    function esc(s) {
+        return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    var toastEl = document.getElementById('toast');
+    var toastTimer;
+    function toast(msg, isError) {
+        toastEl.textContent = msg;
+        toastEl.className = isError ? 'error show' : 'show';
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toastEl.className = ''; }, 3000);
+    }
+
+    // Fotoğraf önizleme
+    function setupPhotoPreview(inputId, previewId) {
+        var input = document.getElementById(inputId);
+        var preview = document.getElementById(previewId);
+        if (!input || !preview) return;
+        input.addEventListener('input', function () {
+            var val = input.value.trim();
+            if (val) {
+                preview.src = val;
+                preview.style.display = 'block';
+                preview.className = 'photo-preview visible';
+            } else {
+                preview.style.display = 'none';
+                preview.className = 'photo-preview';
+            }
+        });
+    }
+    setupPhotoPreview('founder-photo', 'founder-photo-preview');
+    setupPhotoPreview('mbr-photo', 'mbr-photo-preview');
+    setupPhotoPreview('slide-bg-image', 'slide-bg-preview');
+
+
+    // Modal kapat butonları
+    document.querySelectorAll('.modal-close, [data-modal]').forEach(function (btn) {
+        var target = btn.getAttribute('data-modal');
+        if (target) btn.addEventListener('click', function () { closeModal(target); });
+    });
+    document.querySelectorAll('.modal-overlay').forEach(function (overlay) {
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) closeModal(overlay.id);
+        });
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(function (m) { m.classList.remove('open'); });
+    });
+
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+    function clearModalErrors() {
+        document.querySelectorAll('.modal-error').forEach(function (el) { el.style.display = 'none'; });
+    }
+
+    function showModalError(id, msg) {
+        var el = document.getElementById(id);
+        if (el) { el.textContent = msg; el.style.display = 'block'; }
+    }
+
+    // ── PANEL NAVİGASYON ─────────────────────────────────────────
+
+    var panelTitles = {
+        slider: 'Slider Yönetimi', anasayfa: 'Ana Sayfa İçeriği', hakkimizda: 'Hakkımızda', hizmetler: 'Hizmet Alanları',
+        ekip: 'Ekip Üyeleri', makaleler: 'Makaleler', iletisim: 'İletişim Bilgileri'
+    };
+
+
+    document.querySelectorAll('.sidebar-link[data-panel]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            document.querySelectorAll('.sidebar-link').forEach(function (b) { b.classList.remove('active'); });
+            document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
+            btn.classList.add('active');
+            document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+            document.getElementById('panel-title').textContent = panelTitles[btn.dataset.panel] || '';
+        });
+    });
+
+    
+    // Mobil menü
+    var mobBtn = document.getElementById('mobile-menu-btn');
+    var overlay = document.getElementById('admin-overlay');
+    var sidebar = document.querySelector('.sidebar');
+    
+    if (mobBtn) {
+        mobBtn.addEventListener('click', function() {
+            sidebar.classList.add('open');
+            overlay.classList.add('open');
+        });
+    }
+    if (overlay) {
+        overlay.addEventListener('click', function() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+        });
+    }
+    document.querySelectorAll('.sidebar-link').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+        });
+    });
+
+    panelTitles['mesajlar'] = 'Gelen Mesajlar';
+
+    // Mesajlar Fetch
+    function loadMessages() {
+        db.ref('messages').orderByChild('timestamp').on('value', function (snap) {
+            var items = [];
+            var unreadCount = 0;
+            snap.forEach(function (child) {
+                var d = child.val();
+                if (!d.read) unreadCount++;
+                items.unshift({ key: child.key, data: d }); // En yeni en üstte
+            });
+            
+            var badge = document.getElementById('msg-badge');
+            if (badge) {
+                if (unreadCount > 0) { badge.textContent = unreadCount; badge.style.display = 'inline-block'; }
+                else { badge.style.display = 'none'; }
+            }
+
+            renderMessagesList(items);
+        });
+    }
+
+    function renderMessagesList(items) {
+        var list = document.getElementById('messages-list');
+        if (!items.length) { list.innerHTML = '<p style="color:#9ca3af;font-size:.85rem;padding:.5rem 0;">Henüz mesaj yok.</p>'; return; }
+        
+        var html = '<div style="display:flex;flex-direction:column;gap:1rem;">';
+        items.forEach(function (item) {
+            var d = item.data;
+            var dateStr = new Date(d.timestamp).toLocaleString('tr-TR');
+            var bg = d.read ? '#ffffff' : '#f0f4ff';
+            var border = d.read ? '#e5e7eb' : '#bfdbfe';
+            
+            html += '<div style="border:1px solid '+border+'; background:'+bg+'; padding:1rem; border-radius:6px;">' +
+                    '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem;flex-wrap:wrap;gap:0.5rem;">' +
+                        '<div>' +
+                            '<strong style="color:#111827;font-size:1.05rem;">' + esc(d.name) + '</strong>' +
+                            '<br><span style="color:#6b7280;font-size:0.85rem;"><i class="fas fa-envelope"></i> ' + esc(d.email) + ' &nbsp; <i class="fas fa-phone"></i> ' + esc(d.phone) + '</span>' +
+                        '</div>' +
+                        '<div style="text-align:right;">' +
+                            '<span style="color:#9ca3af;font-size:0.75rem;">' + dateStr + '</span><br>' +
+                            '<button class="btn-primary mark-read-btn" data-key="'+item.key+'" style="padding:0.3rem 0.6rem;font-size:0.7rem;margin-top:0.3rem;background:#4b5563;border:none;">'+(d.read ? 'Okunmadı İşaretle' : 'Okundu İşaretle')+'</button> ' +
+                            '<button class="btn-danger del-msg-btn" data-key="'+item.key+'" style="padding:0.3rem 0.6rem;font-size:0.7rem;margin-top:0.3rem;">Sil</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div style="border-top:1px solid '+border+'; padding-top:0.5rem; margin-top:0.5rem;">' +
+                        '<strong style="font-size:0.85rem;color:#374151;">Konu: ' + esc(d.subject) + '</strong>' +
+                        '<p style="color:#4b5563;font-size:0.9rem;margin-top:0.25rem;white-space:pre-wrap;">' + esc(d.message) + '</p>' +
+                    '</div>' +
+                '</div>';
+        });
+        html += '</div>';
+        list.innerHTML = html;
+
+        list.querySelectorAll('.del-msg-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                if(confirm('Mesajı silmek istediğinize emin misiniz?')) {
+                    db.ref('messages/' + this.dataset.key).remove().then(function(){toast('Mesaj silindi.');});
+                }
+            });
+        });
+
+        list.querySelectorAll('.mark-read-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var isRead = this.textContent === 'Okundu İşaretle';
+                db.ref('messages/' + this.dataset.key).update({read: isRead});
+            });
+        });
+    }
+
+    // Call loadMessages inside the init block
+    
+
+    // ── AUTH ─────────────────────────────────────────────────────
+
+    var loginScreen = document.getElementById('login-screen');
+    var adminScreen = document.getElementById('admin-screen');
+
+    auth.onAuthStateChanged(function (user) {
+        if (user) {
+            loginScreen.style.display = 'none';
+            adminScreen.style.display = 'block';
+            document.getElementById('admin-user-email').textContent = user.email;
+            loadAllData();
+        } else {
+            loginScreen.style.display = 'flex';
+            adminScreen.style.display = 'none';
+        }
+    });
+
+    document.getElementById('login-btn').addEventListener('click', doLogin);
+    document.getElementById('admin-password').addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
+
+    function doLogin() {
+        var email = document.getElementById('admin-email').value.trim();
+        var pass = document.getElementById('admin-password').value;
+        var btn = document.getElementById('login-btn');
+        var errEl = document.getElementById('login-error');
+        errEl.style.display = 'none';
+        btn.textContent = 'Giriş yapılıyor...';
+        btn.disabled = true;
+        auth.signInWithEmailAndPassword(email, pass).catch(function () {
+            errEl.textContent = 'E-posta veya şifre hatalı.';
+            errEl.style.display = 'block';
+            btn.textContent = 'Giriş Yap';
+            btn.disabled = false;
+        });
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', function () { auth.signOut(); });
+
+    // ── VERİ YÜKLEME ─────────────────────────────────────────────
+
+    function loadAllData() {
+        loadSlides();
+        loadAbout();
+        loadServices();
+        loadMembers();
+        loadArticles();
+        loadContact();
+        loadMessages();
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // SLIDER
+    // ═══════════════════════════════════════════════════════════════
+
+    var editingSlideKey = null;
+
+    function loadSlides() {
+        db.ref('slider').orderByChild('order').on('value', function (snap) {
+            var items = [];
+            snap.forEach(function (c) { items.push({ key: c.key, data: c.val() }); });
+            renderSlidesList(items);
+        });
+    }
+
+    function renderSlidesList(items) {
+        var list = document.getElementById('slides-list');
+        if (!items.length) { list.innerHTML = '<p style="color:#9ca3af;font-size:.85rem;padding:.5rem 0;">Henüz slayt yok.</p>'; return; }
+        list.innerHTML = '';
+        items.forEach(function (item) {
+            var d = item.data;
+            var div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = '<div class="list-item-body"><strong>' + esc(d.title) +
+                '<span class="badge ' + (d.active !== false ? 'badge-active' : 'badge-inactive') + '">' + (d.active !== false ? 'Aktif' : 'Pasif') + '</span></strong>' +
+                '<span>Sıra: ' + (d.order || 1) + ' · ' + esc(d.subtitle || '—').substring(0, 60) + '</span></div>' +
+                '<div class="list-item-actions"><button class="btn-secondary edit-slide" data-key="' + item.key + '">Düzenle</button>' +
+                '<button class="btn-danger del-slide" data-key="' + item.key + '">Sil</button></div>';
+            list.appendChild(div);
+        });
+        list.querySelectorAll('.edit-slide').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                db.ref('slider/' + btn.dataset.key).once('value', function (s) { openSlideModal(btn.dataset.key, s.val()); });
+            });
+        });
+        list.querySelectorAll('.del-slide').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                if (!confirm('Bu slaytı silmek istediğinize emin misiniz?')) return;
+                db.ref('slider/' + btn.dataset.key).remove().then(function () { toast('Slayt silindi.'); }).catch(function () { toast('Hata!', true); });
+            });
+        });
+    }
+
+    document.getElementById('add-slide-btn').addEventListener('click', function () { openSlideModal(null, null); });
+
+    function openSlideModal(key, d) {
+        editingSlideKey = key;
+        clearModalErrors();
+        document.getElementById('slide-modal-title').textContent = key ? 'Slaytı Düzenle' : 'Yeni Slayt';
+        document.getElementById('slide-title').value = (d && d.title) || '';
+        document.getElementById('slide-subtitle').value = (d && d.subtitle) || '';
+        document.getElementById('slide-eyebrow').value = (d && d.eyebrow) || '';
+        document.getElementById('slide-bg-image').value = (d && d.bgImage) || '';
+        var bgPrev = document.getElementById('slide-bg-preview');
+        if (bgPrev) { bgPrev.src = (d && d.bgImage) || ''; bgPrev.style.display = (d && d.bgImage) ? 'block' : 'none'; }
+        document.getElementById('slide-btn-text').value = (d && d.btnText) || '';
+        document.getElementById('slide-btn-link').value = (d && d.btnLink) || 'iletisim.html';
+        document.getElementById('slide-btn2-text').value = (d && d.btn2Text) || '';
+        document.getElementById('slide-btn2-link').value = (d && d.btn2Link) || '';
+        document.getElementById('slide-order').value = (d && d.order) || 1;
+        document.getElementById('slide-active').checked = (d && d.active === false) ? false : true;
+        openModal('slide-modal');
+    }
+
+    document.getElementById('slide-save-btn').addEventListener('click', function () {
+        var title = document.getElementById('slide-title').value.trim();
+        if (!title) { showModalError('slide-modal-error', 'Başlık zorunludur.'); return; }
+        var btn = this; btn.disabled = true; btn.textContent = 'Kaydediliyor...';
+        var payload = {
+            title: title,
+            subtitle: document.getElementById('slide-subtitle').value.trim(),
+            eyebrow: document.getElementById('slide-eyebrow').value.trim(),
+            bgImage: document.getElementById('slide-bg-image').value.trim(),
+            btnText: document.getElementById('slide-btn-text').value.trim(),
+            btnLink: document.getElementById('slide-btn-link').value.trim(),
+            btn2Text: document.getElementById('slide-btn2-text').value.trim(),
+            btn2Link: document.getElementById('slide-btn2-link').value.trim(),
+            order: parseInt(document.getElementById('slide-order').value) || 1,
+            active: document.getElementById('slide-active').checked,
+            updatedAt: Date.now()
+        };
+        var ref = editingSlideKey ? db.ref('slider/' + editingSlideKey) : db.ref('slider').push();
+        ref.set(payload).then(function () {
+            closeModal('slide-modal');
+            toast(editingSlideKey ? 'Güncellendi.' : 'Eklendi.');
+            btn.disabled = false; btn.textContent = 'Kaydet';
+        }).catch(function (e) {
+            showModalError('slide-modal-error', e.message);
+            btn.disabled = false; btn.textContent = 'Kaydet';
+        });
+    });
+
+
+    // ═══════════════════════════════════════════════════════════════
+    // HAKKIMIZDA
+    // ═══════════════════════════════════════════════════════════════
+
+    function loadAbout() {
+        db.ref('content/about').once('value', function (snap) {
+            var d = snap.val() || {};
+            document.getElementById('about-p1').value = d.p1 || '';
+            document.getElementById('about-p2').value = d.p2 || '';
+            document.getElementById('about-p3').value = d.p3 || '';
+            document.getElementById('founder-name').value = d.founderName || '';
+            document.getElementById('founder-title').value = d.founderTitle || '';
+            document.getElementById('founder-photo').value = d.founderPhoto || '';
+            document.getElementById('founder-bio1').value = d.bio1 || '';
+            document.getElementById('founder-bio2').value = d.bio2 || '';
+            if (d.founderPhoto) {
+                var preview = document.getElementById('founder-photo-preview');
+                preview.src = d.founderPhoto;
+                preview.className = 'photo-preview visible';
+            }
+        });
+    }
+
+    document.getElementById('save-about-btn').addEventListener('click', function () {
+        var btn = this; btn.disabled = true; btn.textContent = 'Kaydediliyor...';
+        db.ref('content/about').set({
+            p1: document.getElementById('about-p1').value.trim(),
+            p2: document.getElementById('about-p2').value.trim(),
+            p3: document.getElementById('about-p3').value.trim(),
+            founderName: document.getElementById('founder-name').value.trim(),
+            founderTitle: document.getElementById('founder-title').value.trim(),
+            founderPhoto: document.getElementById('founder-photo').value.trim(),
+            bio1: document.getElementById('founder-bio1').value.trim(),
+            bio2: document.getElementById('founder-bio2').value.trim(),
+            updatedAt: Date.now()
+        }).then(function () {
+            toast('Hakkımızda bilgileri kaydedildi.');
+            btn.disabled = false; btn.textContent = 'Kaydet';
+        }).catch(function () { toast('Hata!', true); btn.disabled = false; btn.textContent = 'Kaydet'; });
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // HİZMETLER
+    // ═══════════════════════════════════════════════════════════════
+
+    var editingSvcKey = null;
+
+    function loadServices() {
+        db.ref('services').orderByChild('order').on('value', function (snap) {
+            var items = [];
+            snap.forEach(function (c) { items.push({ key: c.key, data: c.val() }); });
+            renderServicesList(items);
+        });
+    }
+
+    function renderServicesList(items) {
+        var list = document.getElementById('services-list');
+        if (!items.length) { list.innerHTML = '<p style="color:#9ca3af;font-size:.85rem;padding:.5rem 0;">Henüz hizmet eklenmemiş.</p>'; return; }
+        list.innerHTML = '';
+        items.forEach(function (item) {
+            var d = item.data;
+            var div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = '<div class="list-item-body">' +
+                '<strong><i class="' + esc(d.icon || '') + '" style="margin-right:.4rem;color:#6f4924;"></i>' + esc(d.title) + '</strong>' +
+                '<span>Sıra: ' + (d.order || 1) + (d.anchor ? ' · #' + esc(d.anchor) : '') + '</span></div>' +
+                '<div class="list-item-actions"><button class="btn-secondary edit-svc" data-key="' + item.key + '">Düzenle</button>' +
+                '<button class="btn-danger del-svc" data-key="' + item.key + '">Sil</button></div>';
+            list.appendChild(div);
+        });
+        list.querySelectorAll('.edit-svc').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                db.ref('services/' + btn.dataset.key).once('value', function (s) { openServiceModal(btn.dataset.key, s.val()); });
+            });
+        });
+        list.querySelectorAll('.del-svc').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                if (!confirm('Silmek istiyor musunuz?')) return;
+                db.ref('services/' + btn.dataset.key).remove().then(function () { toast('Hizmet silindi.'); }).catch(function () { toast('Hata!', true); });
+            });
+        });
+    }
+
+    document.getElementById('add-service-btn').addEventListener('click', function () { openServiceModal(null, null); });
+
+    function openServiceModal(key, d) {
+        editingSvcKey = key;
+        clearModalErrors();
+        document.getElementById('service-modal-title').textContent = key ? 'Hizmeti Düzenle' : 'Yeni Hizmet';
+        document.getElementById('svc-title').value = (d && d.title) || '';
+        document.getElementById('svc-anchor').value = (d && d.anchor) || '';
+        document.getElementById('svc-icon').value = (d && d.icon) || 'fas fa-gavel';
+        document.getElementById('svc-order').value = (d && d.order) || 1;
+        document.getElementById('svc-desc1').value = (d && d.desc1) || '';
+        document.getElementById('svc-desc2').value = (d && d.desc2) || '';
+        openModal('service-modal');
+    }
+
+    document.getElementById('service-save-btn').addEventListener('click', function () {
+        var title = document.getElementById('svc-title').value.trim();
+        var desc1 = document.getElementById('svc-desc1').value.trim();
+        if (!title || !desc1) { showModalError('service-modal-error', 'Başlık ve açıklama zorunludur.'); return; }
+        var btn = this; btn.disabled = true; btn.textContent = 'Kaydediliyor...';
+        var payload = {
+            title: title, anchor: document.getElementById('svc-anchor').value.trim(),
+            icon: document.getElementById('svc-icon').value.trim() || 'fas fa-gavel',
+            order: parseInt(document.getElementById('svc-order').value) || 1,
+            desc1: desc1, desc2: document.getElementById('svc-desc2').value.trim(),
+            updatedAt: Date.now()
+        };
+        var ref = editingSvcKey ? db.ref('services/' + editingSvcKey) : db.ref('services').push();
+        ref.set(payload).then(function () {
+            closeModal('service-modal'); toast(editingSvcKey ? 'Güncellendi.' : 'Eklendi.');
+            btn.disabled = false; btn.textContent = 'Kaydet';
+        }).catch(function (e) { showModalError('service-modal-error', e.message); btn.disabled = false; btn.textContent = 'Kaydet'; });
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // EKİP
+    // ═══════════════════════════════════════════════════════════════
+
+    var editingMbrKey = null;
+
+    function loadMembers() {
+        db.ref('team').orderByChild('order').on('value', function (snap) {
+            var items = [];
+            snap.forEach(function (c) { items.push({ key: c.key, data: c.val() }); });
+            renderMembersList(items);
+        });
+    }
+
+    function renderMembersList(items) {
+        var list = document.getElementById('members-list');
+        if (!items.length) { list.innerHTML = '<p style="color:#9ca3af;font-size:.85rem;padding:.5rem 0;">Henüz ekip üyesi eklenmemiş.</p>'; return; }
+        list.innerHTML = '';
+        items.forEach(function (item) {
+            var d = item.data;
+            var div = document.createElement('div');
+            div.className = 'list-item';
+            var photoHtml = d.photo ? '<img src="' + esc(d.photo) + '" style="width:44px;height:44px;object-fit:cover;flex-shrink:0;">' : '<div style="width:44px;height:44px;background:#e5e0d8;flex-shrink:0;"></div>';
+            div.innerHTML = photoHtml +
+                '<div class="list-item-body"><strong>' + esc(d.name) + '</strong><span>' + esc(d.title) + (d.specialty ? ' · ' + esc(d.specialty) : '') + '</span></div>' +
+                '<div class="list-item-actions"><button class="btn-secondary edit-mbr" data-key="' + item.key + '">Düzenle</button>' +
+                '<button class="btn-danger del-mbr" data-key="' + item.key + '">Sil</button></div>';
+            list.appendChild(div);
+        });
+        list.querySelectorAll('.edit-mbr').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                db.ref('team/' + btn.dataset.key).once('value', function (s) { openMemberModal(btn.dataset.key, s.val()); });
+            });
+        });
+        list.querySelectorAll('.del-mbr').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                if (!confirm('Silmek istiyor musunuz?')) return;
+                db.ref('team/' + btn.dataset.key).remove().then(function () { toast('Üye silindi.'); }).catch(function () { toast('Hata!', true); });
+            });
+        });
+    }
+
+    document.getElementById('add-member-btn').addEventListener('click', function () { openMemberModal(null, null); });
+
+    function openMemberModal(key, d) {
+        editingMbrKey = key;
+        clearModalErrors();
+        document.getElementById('member-modal-title').textContent = key ? 'Üyeyi Düzenle' : 'Yeni Ekip Üyesi';
+        document.getElementById('mbr-name').value = (d && d.name) || '';
+        document.getElementById('mbr-title').value = (d && d.title) || '';
+        document.getElementById('mbr-specialty').value = (d && d.specialty) || '';
+        document.getElementById('mbr-order').value = (d && d.order) || 1;
+        document.getElementById('mbr-photo').value = (d && d.photo) || '';
+        var preview = document.getElementById('mbr-photo-preview');
+        if (d && d.photo) { preview.src = d.photo; preview.className = 'photo-preview visible'; } else { preview.className = 'photo-preview'; }
+        openModal('member-modal');
+    }
+
+    document.getElementById('member-save-btn').addEventListener('click', function () {
+        var name = document.getElementById('mbr-name').value.trim();
+        var title = document.getElementById('mbr-title').value.trim();
+        if (!name || !title) { showModalError('member-modal-error', 'İsim ve unvan zorunludur.'); return; }
+        var btn = this; btn.disabled = true; btn.textContent = 'Kaydediliyor...';
+        var payload = {
+            name: name, title: title,
+            specialty: document.getElementById('mbr-specialty').value.trim(),
+            order: parseInt(document.getElementById('mbr-order').value) || 1,
+            photo: document.getElementById('mbr-photo').value.trim(),
+            updatedAt: Date.now()
+        };
+        var ref = editingMbrKey ? db.ref('team/' + editingMbrKey) : db.ref('team').push();
+        ref.set(payload).then(function () {
+            closeModal('member-modal'); toast(editingMbrKey ? 'Güncellendi.' : 'Eklendi.');
+            btn.disabled = false; btn.textContent = 'Kaydet';
+        }).catch(function (e) { showModalError('member-modal-error', e.message); btn.disabled = false; btn.textContent = 'Kaydet'; });
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // MAKALELER
+    // ═══════════════════════════════════════════════════════════════
+
+    var editingArtKey = null;
+
+    function loadArticles() {
+        db.ref('articles').orderByChild('timestamp').on('value', function (snap) {
+            var items = [];
+            snap.forEach(function (c) { items.push({ key: c.key, data: c.val() }); });
+            items.reverse();
+            renderArticlesList(items);
+        });
+    }
+
+    function renderArticlesList(items) {
+        var list = document.getElementById('articles-list');
+        if (!items.length) { list.innerHTML = '<p style="color:#9ca3af;font-size:.85rem;padding:.5rem 0;">Henüz makale eklenmemiş.</p>'; return; }
+        list.innerHTML = '';
+        items.forEach(function (item) {
+            var d = item.data;
+            var div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = '<div class="list-item-body"><strong>' + esc(d.title) +
+                '<span class="badge badge-cat">' + esc(d.category || '') + '</span>' +
+                '<span class="badge ' + (d.active !== false ? 'badge-active' : 'badge-inactive') + '">' + (d.active !== false ? 'Aktif' : 'Pasif') + '</span></strong>' +
+                '<span>' + esc(d.date || '') + ' · ' + esc((d.excerpt || '').substring(0, 70)) + '</span></div>' +
+                '<div class="list-item-actions"><button class="btn-secondary edit-art" data-key="' + item.key + '">Düzenle</button>' +
+                '<button class="btn-danger del-art" data-key="' + item.key + '">Sil</button></div>';
+            list.appendChild(div);
+        });
+        list.querySelectorAll('.edit-art').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                db.ref('articles/' + btn.dataset.key).once('value', function (s) { openArticleModal(btn.dataset.key, s.val()); });
+            });
+        });
+        list.querySelectorAll('.del-art').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                if (!confirm('Bu makaleyi silmek istediğinize emin misiniz?')) return;
+                db.ref('articles/' + btn.dataset.key).remove().then(function () { toast('Makale silindi.'); }).catch(function () { toast('Hata!', true); });
+            });
+        });
+    }
+
+    document.getElementById('add-article-btn').addEventListener('click', function () { openArticleModal(null, null); });
+
+    function openArticleModal(key, d) {
+        editingArtKey = key;
+        clearModalErrors();
+        document.getElementById('article-modal-title').textContent = key ? 'Makaleyi Düzenle' : 'Yeni Makale';
+        document.getElementById('art-title').value = (d && d.title) || '';
+        document.getElementById('art-excerpt').value = (d && d.excerpt) || '';
+        document.getElementById('art-content').value = (d && d.content) || '';
+        document.getElementById('art-category').value = (d && d.category) || 'Genel';
+        document.getElementById('art-date').value = (d && d.date) || new Date().toISOString().split('T')[0];
+        document.getElementById('art-active').checked = (d && d.active === false) ? false : true;
+        openModal('article-modal');
+    }
+
+    document.getElementById('article-save-btn').addEventListener('click', function () {
+        var title = document.getElementById('art-title').value.trim();
+        var excerpt = document.getElementById('art-excerpt').value.trim();
+        if (!title || !excerpt) { showModalError('article-modal-error', 'Başlık ve özet zorunludur.'); return; }
+        var btn = this; btn.disabled = true; btn.textContent = 'Kaydediliyor...';
+        var rawDate = document.getElementById('art-date').value;
+        var displayDate = rawDate ? rawDate.split('-').reverse().join('.') : '';
+        var payload = {
+            title: title, excerpt: excerpt,
+            content: document.getElementById('art-content').value.trim(),
+            category: document.getElementById('art-category').value,
+            date: displayDate, active: document.getElementById('art-active').checked,
+            timestamp: editingArtKey ? undefined : Date.now(),
+            updatedAt: Date.now()
+        };
+        if (!editingArtKey) { delete payload.timestamp; payload.timestamp = Date.now(); }
+        var ref = editingArtKey ? db.ref('articles/' + editingArtKey) : db.ref('articles').push();
+        ref.set(payload).then(function () {
+            closeModal('article-modal'); toast(editingArtKey ? 'Güncellendi.' : 'Eklendi.');
+            btn.disabled = false; btn.textContent = 'Kaydet';
+        }).catch(function (e) { showModalError('article-modal-error', e.message); btn.disabled = false; btn.textContent = 'Kaydet'; });
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // İLETİŞİM
+    // ═══════════════════════════════════════════════════════════════
+
+    function loadContact() {
+        db.ref('content/contact').once('value', function (snap) {
+            var d = snap.val() || {};
+            document.getElementById('contact-address').value = d.address || '';
+            document.getElementById('contact-phone').value = d.phone || '';
+            document.getElementById('contact-phone2').value = d.phone2 || '';
+            document.getElementById('contact-email').value = d.email || '';
+            document.getElementById('contact-hours').value = d.hours || '';
+            document.getElementById('contact-map').value = d.mapUrl || '';
+        });
+    }
+
+    document.getElementById('save-contact-btn').addEventListener('click', function () {
+        var btn = this; btn.disabled = true; btn.textContent = 'Kaydediliyor...';
+        db.ref('content/contact').set({
+            address: document.getElementById('contact-address').value.trim(),
+            phone: document.getElementById('contact-phone').value.trim(),
+            phone2: document.getElementById('contact-phone2').value.trim(),
+            email: document.getElementById('contact-email').value.trim(),
+            hours: document.getElementById('contact-hours').value.trim(),
+            mapUrl: document.getElementById('contact-map').value.trim(),
+            updatedAt: Date.now()
+        }).then(function () {
+            toast('İletişim bilgileri kaydedildi.');
+            btn.disabled = false; btn.textContent = 'Kaydet';
+        }).catch(function () { toast('Hata!', true); btn.disabled = false; btn.textContent = 'Kaydet'; });
+    });
+
+    // ── ANA SAYFA PANELİ (content/home) ──────────────────────────
+    function loadAnaSayfa() {
+        db.ref('content/home').once('value', function (snap) {
+            var d = snap.val() || {};
+            document.getElementById('home-logoUrl').value = d.logoUrl || '';
+            document.getElementById('home-aboutEyebrow').value = d.aboutEyebrow || '';
+            document.getElementById('home-aboutHeading').value  = d.aboutHeading  || '';
+            document.getElementById('home-aboutP1').value       = d.aboutP1       || '';
+            document.getElementById('home-aboutP2').value       = d.aboutP2       || '';
+            document.getElementById('home-aboutImageUrl').value = d.aboutImageUrl  || '';
+            document.getElementById('home-aboutBtnText').value  = d.aboutBtnText  || '';
+            document.getElementById('home-ctaEyebrow').value    = d.ctaEyebrow    || '';
+            document.getElementById('home-ctaHeading').value    = d.ctaHeading    || '';
+            document.getElementById('home-ctaLinkText').value   = d.ctaLinkText   || '';
+            document.getElementById('home-footerTagline').value = d.footerTagline || '';
+            document.getElementById('home-footerDisclaimer').value = d.footerDisclaimer || '';
+
+            document.getElementById('bg-hakkimizda').value = d.hakkimizdaBg || '';
+            document.getElementById('bg-hizmetler').value = d.hizmetlerBg || '';
+            document.getElementById('bg-ekip').value = d.ekipBg || '';
+            document.getElementById('bg-makaleler').value = d.makalelerBg || '';
+            document.getElementById('bg-iletisim').value = d.iletisimBg || '';
+
+        });
+    }
+    loadAnaSayfa();
+
+    document.getElementById('save-anasayfa-btn').addEventListener('click', function () {
+        var btn = this; btn.disabled = true; btn.textContent = 'Kaydediliyor...';
+        db.ref('content/home').set({
+            logoUrl: document.getElementById('home-logoUrl').value.trim(),
+            aboutEyebrow: document.getElementById('home-aboutEyebrow').value.trim(),
+            aboutHeading:     document.getElementById('home-aboutHeading').value.trim(),
+            aboutP1:          document.getElementById('home-aboutP1').value.trim(),
+            aboutP2:          document.getElementById('home-aboutP2').value.trim(),
+            aboutImageUrl:    document.getElementById('home-aboutImageUrl').value.trim(),
+            aboutBtnText:     document.getElementById('home-aboutBtnText').value.trim(),
+            ctaEyebrow:       document.getElementById('home-ctaEyebrow').value.trim(),
+            ctaHeading:       document.getElementById('home-ctaHeading').value.trim(),
+            ctaLinkText:      document.getElementById('home-ctaLinkText').value.trim(),
+            footerTagline:    document.getElementById('home-footerTagline').value.trim(),
+            footerDisclaimer: document.getElementById('home-footerDisclaimer').value.trim(),
+
+            hakkimizdaBg: document.getElementById('bg-hakkimizda').value.trim(),
+            hizmetlerBg: document.getElementById('bg-hizmetler').value.trim(),
+            ekipBg: document.getElementById('bg-ekip').value.trim(),
+            makalelerBg: document.getElementById('bg-makaleler').value.trim(),
+            iletisimBg: document.getElementById('bg-iletisim').value.trim(),
+            updatedAt: Date.now()
+        }).then(function () {
+            toast('Ana Sayfa içeriği kaydedildi.');
+            btn.disabled = false; btn.textContent = 'Ana Sayfa İçeriğini Kaydet';
+        }).catch(function () { toast('Hata!', true); btn.disabled = false; btn.textContent = 'Ana Sayfa İçeriğini Kaydet'; });
+    });
+
+})();
+</script>
+</body>
+</html>
