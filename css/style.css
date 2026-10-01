@@ -8,9 +8,9 @@
     --bg-alt: #080D1E; /* Biraz daha koyu ton, derinlik için */
     --text-main: #F8F9FA; /* Kırık beyaz */
     --text-muted: #A0AAB2; /* Gri / Soluk bej */
-    --gold: #D4AF37; /* Asil Altın */
+    --gold: #BA8C5A; /* Asil Altın */
     --gold-muted: rgba(212, 175, 55, 0.4);
-    --gold-faint: rgba(212, 175, 55, 0.15);
+    --gold-faint: rgba(186, 140, 90, 0.15);
     --border-light: rgba(255, 255, 255, 0.08);
     
     --font-heading: \'Playfair Display\', serif;
@@ -519,5 +519,12 @@ p { color: var(--text-muted); max-width: 70ch; }
     .team-card__content { padding: 1.25rem; }
     .cta-band { padding: 60px 0; }
     .cta-band .btn-group { align-items: stretch; }
-    .btn { width: 100%; justify-content: center; }
+    .btn { width: 100%; justify-content: center; 
+    .brand__name { font-size: 1.15rem; white-space: nowrap; }
+    .brand__sub { font-size: 0.55rem; letter-spacing: 0.15em; white-space: nowrap; }
+}
+}
+
+@media (max-width: 480px) {
+    #header-brand img { height: 36px !important; margin-right: 8px !important; }
 }
